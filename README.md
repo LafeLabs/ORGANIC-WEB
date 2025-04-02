@@ -30,6 +30,17 @@ THE ORGANIC WEB IS A SELF-REPLICATING SET OF FILES WHICH GROW LIKE A FUNGUS ACRO
  - [php/text2php.txt](php/text2php.txt)
 
 
+TO INSTALL ON A LOCAL MACHINE, INSTALL XAMPP AND PUT THE REPLICATOR IN THE MAIN WEB FOLDER AND THEN RUN THE REPLICATOR!
+
+### [LINK TO XAMPP DOWNLOAD PAGE!](https://www.apachefriends.org/)
+
+## JAVASCRIPT LIBRARIES USED
+
+ - [showdown.js](https://showdownjs.com/)
+ - [ace.js](https://ace.c9.io/)
+ - [mathjax.js](https://www.mathjax.org/)
+ - [qrcode.js](https://davidshimjs.github.io/qrcodejs/)
+
 
 
 
