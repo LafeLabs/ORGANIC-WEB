@@ -48,6 +48,8 @@ AFTER THAT, THIS PAGE SHOULD BE AT
  - [mathjax.js](https://www.mathjax.org/)
  - [qrcode.js](https://davidshimjs.github.io/qrcodejs/)
 
+## GLOBAL INSTANCES
 
-
+ - [https://trashrobot.net/ORGANIC-WEB/](https://trashrobot.net/ORGANIC-WEB/)
+ - [https://alabamariver.quest/ORGANIC-WEB/](https://alabamariver.quest/ORGANIC-WEB/)
 
