@@ -1,3 +1,5 @@
+[http://localhost/ORGANIC-WEB/](http://localhost/ORGANIC-WEB/)
+
 ![](qrcode.png)
 ![](sign.png)
 
@@ -53,16 +55,3 @@ AFTER THAT, THIS PAGE SHOULD BE AT
  - [https://trashrobot.net/ORGANIC-WEB/](https://trashrobot.net/ORGANIC-WEB/)
  - [https://alabamariver.quest/ORGANIC-WEB/](https://alabamariver.quest/ORGANIC-WEB/)
 
-## SCREEN SHOTS
-
-### HOME PAGE:
-![](index-screenshot.png)
-### HOME PAGE EDITOR:
-![](edit-screenshot.png)
-### WEB CODE EDITOR:
-![](webeditor-screenshot.png)
-### README EDITOR:
-![](readme-light.png)
-![](readme-dark.png)
-### FULL SYSTEM CODE EDITOR:
-![](editor-php-screenshot.png)
