@@ -1,4 +1,5 @@
 ![](qrcode.png)
+![](sign.png)
 
 # [ORGANIC WEB](https://github.com/LafeLabs/ORGANIC-WEB)
 
