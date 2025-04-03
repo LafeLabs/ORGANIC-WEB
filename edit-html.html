@@ -32,6 +32,7 @@ https://cloud9-sdk.readme.io/docs/language-mode
 
 <a id = "homelink" href=  "index.html" style = "position:absolute;right:5px;top:1.5em;font-size:2em;font-family:Comic Sans MS">HOME</a>
 
+<a id = "homelink" href=  "generate-dna.php" style = "position:absolute;right:5px;top:3.5em;font-size:2em;font-family:Comic Sans MS">generate-dna.php</a>
 
 <table id = "inputtable">
     <tr>
@@ -176,35 +177,19 @@ name = "";
 document.getElementById("newscrollinput").onchange = function(){
     name = this.value;
     currentFile = name;
-    var httpc = new XMLHttpRequest();
-    httpc.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            filedata = this.responseText;
-            if(filedata.length == 0){
-                scroll = editor.getSession().getValue();
-        
-                setmode();
-                editor.setValue(scroll);  
-                data = encodeURIComponent(scroll);
-                var httpc = new XMLHttpRequest();
-                var url = "save-file.php";        
-                httpc.open("POST", url, true);
-                httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-                httpc.send("data="+data+"&filename=" + currentFile);//send text to save-file.php
-                addcodelink(name);
-                
-            }
-            else{
-                setmode();
-                editor.setValue(filedata);                
-            }
+    scroll = editor.getSession().getValue();
 
-            document.getElementById("currentfilename").innerHTML = currentFile;
-        }
-    };
-    httpc.open("GET", "load-file.php?filename=" + currentFile, true);
-    httpc.send();
-    
+    setmode();
+    editor.setValue(scroll);  
+    data = encodeURIComponent(scroll);
+    var httpc = new XMLHttpRequest();
+    var url = "save-file.php";        
+    httpc.open("POST", url, true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+    httpc.send("data="+data+"&filename=" + currentFile);//send text to save-file.php
+    addcodelink(name);
+    document.getElementById("currentfilename").innerHTML = currentFile;
+
 }
 
 

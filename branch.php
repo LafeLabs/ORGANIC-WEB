@@ -4,17 +4,14 @@ $branchname = $_GET["branchname"];//get branch name
 mkdir($branchname);//create directory with branch name
 
 if(isset($_GET["replicator"])){
-
     $replicatorurl = $_GET["replicator"];
     copy($replicatorurl,$branchname."/replicator.php");
-    
 }
 else{
     copy("php/local-replicator.txt",$branchname."/replicator.php");    
 }
 
-
-echo "<a href = \"".$dirname."/replicator.php\">CLICK ME(2/3)</a>";
+echo "<a href = \"".$branchname."/replicator.php\">CLICK ME(2/3)</a>";
 
 ?>
 <style>

@@ -2,37 +2,28 @@
     "html": [
         "README.md",
         "branch.html",
+        "delete-html.html",
+        "delete-php.html",
         "dna.txt",
         "edit-html.html",
-        "edit.html",
-        "fork.html",
+        "edit-index.html",
+        "edit-php.html",
         "index.html",
         "qrcode-page.html",
         "qrcode.html",
-        "readme.html",
-        "webdestroyer.html",
-        "webeditor.html"
+        "readme.html"
     ],
     "php": [
         "branch.txt",
         "compile-php.txt",
-        "copy.txt",
-        "create-dna.txt",
         "delete-branch.txt",
         "delete-file.txt",
-        "deletefile.txt",
-        "dir.txt",
-        "dnagenerator.txt",
-        "editor.txt",
-        "filesaver.txt",
+        "generate-dna.txt",
         "list-branches.txt",
         "list-files.txt",
         "load-file.txt",
         "local-replicator.txt",
-        "mkdir.txt",
-        "rdelete.txt",
         "replicator.txt",
-        "save-file.txt",
-        "text2php.txt"
+        "save-file.txt"
     ]
 }

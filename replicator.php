@@ -1,5 +1,4 @@
 <?php
-//test
 $dnaurl = "https://raw.githubusercontent.com/LafeLabs/ORGANIC-WEB/refs/heads/main/dna.txt";
 
 if(isset($_GET["dna"])){
