@@ -1,6 +1,8 @@
 {
     "html": [
         "README.md",
+        "branch.html",
+        "dna.txt",
         "edit-html.html",
         "edit.html",
         "fork.html",
@@ -10,9 +12,6 @@
         "readme.html",
         "webdestroyer.html",
         "webeditor.html"
-    ],
-    "data": [
-        "dna.txt"
     ],
     "php": [
         "branch.txt",
@@ -26,6 +25,7 @@
         "dnagenerator.txt",
         "editor.txt",
         "filesaver.txt",
+        "list-branches.txt",
         "list-files.txt",
         "load-file.txt",
         "local-replicator.txt",

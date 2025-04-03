@@ -1,10 +1,9 @@
 <?php
 
-$dnaraw = file_get_contents("../data/dna.txt");
+$dnaraw = file_get_contents("../dna.txt");
 $dna = json_decode($dnaraw);
 $baseurl = "../";
 
-mkdir("data");
 mkdir("php");
 
 copy("../php/local-replicator.txt","replicator.php");
@@ -14,14 +13,6 @@ foreach($dna->html as $value){
     copy($baseurl.$value,$value);
 
 }
-
-
-foreach($dna->data as $value){
-    
-    copy($baseurl."data/".$value,"data/".$value);
-    
-}
-
 
 foreach($dna->php as $value){
  
