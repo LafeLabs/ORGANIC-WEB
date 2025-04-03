@@ -85,10 +85,10 @@ httpc.send();
 document.getElementById("maineditor").onkeyup = function(){
     data = encodeURIComponent(editor.getSession().getValue());
     var httpc = new XMLHttpRequest();
-    var url = "filesaver.php";        
+    var url = "save-file.php";        
     httpc.open("POST", url, true);
     httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-    httpc.send("data="+data+"&filename="+currentFile);//send text to filesaver.php
+    httpc.send("data="+data+"&filename="+currentFile);//send text to save-file.php
     var fileType = currentFile.split("/")[0]; 
     var fileName = currentFile.split("/")[1];
 }

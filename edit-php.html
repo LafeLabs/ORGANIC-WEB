@@ -32,6 +32,7 @@ https://cloud9-sdk.readme.io/docs/language-mode
 
 <a id = "homelink" href=  "index.html" style = "position:absolute;right:5px;top:1.5em;font-size:2em;font-family:Comic Sans MS">HOME</a>
 
+<a id = "homelink" href=  "compile-php.php" style = "position:absolute;right:5px;top:3.5em;font-size:2em;font-family:Comic Sans MS">COMPILE PHP CODE!</a>
 
 <table id = "inputtable">
     <tr>
@@ -54,21 +55,16 @@ https://cloud9-sdk.readme.io/docs/language-mode
 <script>
 
 prototypescroll = "name";
-arduinoprototype = "//name\nvoid setup(){\n\n}\nvoid loop() {\n\n}\n";
-htmlprototype = "<!doctype html>\n<html>\n<head>\n<title>name</title>\n<meta charset=\"utf-8\">\n</head>\n<body>\n</body>\n</html>\n";
-pythonprototype = "# name\n# new python program";
-
-
 
 editor = ace.edit("maineditor");
 editor.setTheme("ace/theme/github");
 //editor.setTheme("ace/theme/vibrant_ink");
-editor.getSession().setMode("ace/mode/html");
+editor.getSession().setMode("ace/mode/php");
 editor.getSession().setUseWrapMode(true);
 editor.$blockScrolling = Infinity;
 editor.setTheme("ace/theme/vibrant_ink");
 
-currentFile = "index.html";
+currentFile = "php/replicator.txt";
 var httpc = new XMLHttpRequest();
 httpc.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -82,42 +78,18 @@ httpc.open("GET", "load-file.php?filename=" + currentFile, true);
 httpc.send();
 
 
-
-var httpcprototype = new XMLHttpRequest();
-httpcprototype.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        htmlprototype = this.responseText;
-    }
-};
-httpcprototype.open("GET", "load-file.php?filename=index.html", true);
-httpcprototype.send();
-
-
 scrolls = [];
 var httpc8 = new XMLHttpRequest();
 httpc8.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         scrolls = JSON.parse(this.responseText);
         for(var index = 0;index < scrolls.length;index++) {    
-            if(scrolls[index].substring(scrolls[index].length-5,scrolls[index].length) == ".html" || scrolls[index].substring(scrolls[index].length-4,scrolls[index].length) == ".css" || scrolls[index].substring(scrolls[index].length-3,scrolls[index].length) == ".js"  || scrolls[index].substring(scrolls[index].length-3,scrolls[index].length) == ".py" || scrolls[index].substring(scrolls[index].length-4,scrolls[index].length) == ".txt" || scrolls[index].substring(scrolls[index].length-4,scrolls[index].length) == ".ino" || scrolls[index].substring(scrolls[index].length-5,scrolls[index].length) == ".json" || scrolls[index].substring(scrolls[index].length-4,scrolls[index].length) == ".tex" || scrolls[index].substring(scrolls[index].length - 3,scrolls[index].length) == ".md"){
+            if(scrolls[index].substring(scrolls[index].length-4,scrolls[index].length) == ".txt"){
              
-                if(scrolls[index].substring(scrolls[index].length-5,scrolls[index].length) == ".html"){
-                    var newa = document.createElement("A");
-                    newa.innerHTML = scrolls[index];
-                    newa.href = scrolls[index];
-                    document.getElementById("filescroll").appendChild(newa);
-                 }             
                 var newscrollbutton = document.createElement("div");
                 newscrollbutton.classList.add("file");
                 newscrollbutton.classList.add("html");
-                if(scrolls[index].substring(scrolls[index].length-3,scrolls[index].length) == ".js"){
-                    newscrollbutton.style.borderColor = "red";
-                }
-                if(scrolls[index].substring(scrolls[index].length-4,scrolls[index].length) == ".css"){
-                    newscrollbutton.style.borderColor = "yellow";
-                }
-
-                newscrollbutton.innerHTML =  scrolls[index];
+                newscrollbutton.innerHTML =   "php/" + scrolls[index];
                 document.getElementById("filescroll").appendChild(newscrollbutton);
                 newscrollbutton.onclick = function(){
                     currentFile = this.innerHTML;
@@ -145,7 +117,7 @@ httpc8.onreadystatechange = function() {
     }
 };
 
-httpc8.open("GET", "list-files.php", true);
+httpc8.open("GET", "list-files.php?directoryname=php", true);
 httpc8.send();
 
 
@@ -212,7 +184,7 @@ function addcodelink(codename){
     var newscrollbutton = document.createElement("div");
     newscrollbutton.classList.add("file");
     newscrollbutton.classList.add("html");
-    newscrollbutton.innerHTML = codename;
+    newscrollbutton.innerHTML = "php/" + codename;
     document.getElementById("filescroll").appendChild(newscrollbutton);
     newscrollbutton.onclick = function(){
         currentFile = this.innerHTML;

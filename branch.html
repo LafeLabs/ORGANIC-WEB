@@ -103,7 +103,7 @@ var httpc2 = new XMLHttpRequest();
     }
 };
 
-httpc2.open("GET", "dir.php?type=dir", true);
+httpc2.open("GET", "list-branches.php", true);
 httpc2.send();
 
 
@@ -116,7 +116,6 @@ inputs[1].value = "";
 inputs[0].onchange = function() {
     dir = this.value;
     dirlink.innerHTML = "<BR>CLICK ME(1/3)!";
-//    dirlink.innerHTML = "mkdir.php?dir=" + this.value;
     dirlink.href = "branch.php?branchname=" + this.value;
 }
 

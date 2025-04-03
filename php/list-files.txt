@@ -2,15 +2,13 @@
 
 // list files and or directories in a directory
 
-
-if(isset($_GET["filename"])){
-    $filename = $_GET["filename"];//
-    $files = scandir(getcwd()."/".$filename);
+if(isset($_GET["directoryname"])){
+    $directoryname = $_GET["directoryname"];//
+    $files = scandir(getcwd()."/".$directoryname);
 }
 else{
     $files = scandir(getcwd());
 }
-
 
 if(isset($_GET["type"])){
     if($_GET["type"] == "dir"){
