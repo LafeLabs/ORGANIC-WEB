@@ -2,6 +2,7 @@
 
 ![](qrcode.png)
 ![](sign.png)
+![](qrcode-page.png)
 
 # [ORGANIC WEB](https://github.com/LafeLabs/ORGANIC-WEB)
 
@@ -57,4 +58,12 @@ AFTER THAT, THIS PAGE SHOULD BE AT
 
  - [https://trashrobot.net/ORGANIC-WEB/](https://trashrobot.net/ORGANIC-WEB/)
  - [https://alabamariver.quest/ORGANIC-WEB/](https://alabamariver.quest/ORGANIC-WEB/)
+
+## CARDS
+
+![](CARD1.jpg)
+![](CARD2.jpg)
+![](CARD3.jpg)
+![](CARD4.jpg)
+![](CARD5.jpg)
 

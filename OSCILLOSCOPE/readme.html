@@ -77,7 +77,7 @@ httpc.onreadystatechange = function() {
         editor.setValue(filedata);
     }
 };
-httpc.open("GET", "fileloader.php?filename=" + currentFile, true);
+httpc.open("GET", "load-file.php?filename=" + currentFile, true);
 httpc.send();
 
 
