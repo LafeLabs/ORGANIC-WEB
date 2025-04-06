@@ -14,6 +14,7 @@ ORGANIC WEB:SELF REPLICATING HTML!
 <h1>ORGANIC WEB: SELF-REPLICATING HTML!</h1>
 
 <a href = "../">RETURN TOWARD ROOT OF TREE!</a>
+<DIV ID = "branches"></DIV>
 <A HREF = "https://github.com/LafeLabs/ORGANIC-WEB">GITHUB.COM!</A>
 <A href = "qrcode.html">qrcode.html</A>
 <A href = "qrcode.html">qrcode-page.html</A>
@@ -25,6 +26,27 @@ ORGANIC WEB:SELF REPLICATING HTML!
 <a href ="http://localhost/ORGANIC-WEB/">http://localhost/ORGANIC-WEB/</a>
 <a href = "https://trashrobot.net/ORGANIC-WEB/">TRASHROBOT.NET/ORGANIC-WEB/</a>
 
+<script>
+branches = [];
+var httpc = new XMLHttpRequest();
+    httpc.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        branches = JSON.parse(this.responseText);
+        for(var index = 0;index < branches.length;index++) {
+            if(branches[index] != "php"){
+                var newa = document.createElement("A");
+                newa.innerHTML = branches[index] + "/";
+                newa.href = branches[index] + "/";
+                document.getElementById("branches").appendChild(newa);
+            }
+        }
+    }
+};
+
+httpc.open("GET", "list-branches.php", true);
+httpc.send();
+
+</script>
 <style>
     body{
         background-color:#808080;

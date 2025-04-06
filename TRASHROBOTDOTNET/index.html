@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <!--
+ORGANIC WEB:SELF REPLICATING HTML!
+   -->
+   <!--Stop Google:-->
+<META NAME="robots" CONTENT="noindex,nofollow">
+<link href="data:image/x-icon;base6r4,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAP//AP///wANAP8A5Dz6ABueRwAAt/8A6BonABo86AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAREREREREREREREAAAEREREREQCIgREREd3dwAAB3d3d3d3d3d3d3d3d3d3d3d3d3VVVVVVVQAFVVAAVVVQIiBRAiIBEQIAIBECAAERAgAgFgIABmYCIiBmAiIGZgIiIGYCIgZmYCIAaIAAMzMzAAiIiIiIiIiIiIiIiIiIiIiIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" rel="icon" type="image/x-icon">
+   <title>TRASH ROBOT DOT NET!</title>    
+   <script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>   
+     <script src = "trashmagic.js"></script>    
+     <link rel="stylesheet" href="trashmagic.css">
+</head>
+
+<div id = "qrcode"></div>
+
+<H1>TRASH ROBOT DOT NET</H1>
+
+<a href = "edit-html.html">edit-html.html</a>
+<a href = "edit-php.html">edit-php.html</a>
+<A HREF= "https://github.com/LafeLabs/TRASH-MAGICIAN">TRASH MAGICIAN</A>
+<A HREF= "https://github.com/LafeLabs/TRASH-CLOUD">TRASH CLOUD</A>
+<A HREF= "https://github.com/LafeLabs/ORGANIC-WEB">ORGANIC WEB</A>
+<A HREF= "https://github.com/LafeLabs/STREET-NETWORK">STREET NETWORK</A>
+<A HREF= "https://github.com/LafeLabs/CARDBOARD-HYPERTEXT">CARDBOARD HYPERTEXT</A>
+<A HREF= "https://github.com/LafeLabs/REPLICATE-TRASH-MAGIC-SERVER">TRASH MAGIC SERVER</A>
+
+<script>
+globalurl = window.location.href;
+if(innerWidth > innerHeight){
+    codesquaresize = 0.6*innerHeight;
+}
+else{
+    codesquaresize = 0.6*innerWidth;
+    
+}
+qrcode = new QRCode(document.getElementById("qrcode"), {
+	text: globalurl,
+	width: codesquaresize,
+	height: codesquaresize,
+	colorDark : "#000000",
+	colorLight : "#ffffff",
+	correctLevel : QRCode.CorrectLevel.H
+});
+
+titles = document.getElementsByTagName("H1");
+for(var index = 0;index < titles.length;index++){
+    rainbowstring(titles[index]);    
+}
+rainbow(document.getElementsByTagName("A"));
+
+</script>
+<style>
+</style>
+<body>    
+</body>
+</html>
+
+
+    
+    
