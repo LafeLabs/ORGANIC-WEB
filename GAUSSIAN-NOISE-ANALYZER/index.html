@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <!--
+ORGANIC WEB:SELF REPLICATING HTML!
+   -->
+   <!--Stop Google:-->
+<META NAME="robots" CONTENT="noindex,nofollow">
+<link href="data:image/x-icon;base6r4,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAP//AP///wANAP8A5Dz6ABueRwAAt/8A6BonABo86AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAREREREREREREREAAAEREREREQCIgREREd3dwAAB3d3d3d3d3d3d3d3d3d3d3d3d3VVVVVVVQAFVVAAVVVQIiBRAiIBEQIAIBECAAERAgAgFgIABmYCIiBmAiIGZgIiIGYCIgZmYCIAaIAAMzMzAAiIiIiIiIiIiIiIiIiIiIiIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" rel="icon" type="image/x-icon">
+   <title>GAUSSIAN NOISE ANALYZER</title>    
+   <script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            processEscapes: true,
+            processClass: "mathjax",
+            ignoreClass: "no-mathjax"
+            }
+        });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+    </script>   
+<script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
+</head>
+<a href = "edit-index.html">edit-index.html</a>
+<DIV ID = "APP-TITLE">
+    GAUSSIAN NOISE ANALYZER
+</DIV>
+<DIV ID = "APP-SUB-TITLE">
+    <I>THE NOISE IS THE SIGNAL!</I>
+</DIV>
+
+<DIV ID = "QRCODE"></DIV>
+<DIV ID = "DATA-CONTROL-BUTTONS">
+    <DIV ID = "LOAD-DATA-FILE-BUTTON">LOAD data.txt</DIV>
+    <DIV ID = "SIMULATE-BUTTON">RUN SIMULATION</DIV>
+</DIV>
+<TEXTAREA ID = "DATA-IO-PORT"></TEXTAREA>
+<TABLE>
+    <TR>
+        <TD>$\mu_{simulate} = $</TD>
+        <TD>
+            <INPUT ID = "MU-INPUT">
+        </TD>
+        <TD>$\sigma_{simulate} = $</TD>
+        <TD>
+            <INPUT ID = "SIGMA-INPUT">
+        </TD>
+        <TD>$N = $</TD>
+        <TD>
+            <INPUT ID = "N-INPUT">
+        </TD>
+
+    </TR>
+</TABLE>
+<style>
+INPUT{
+    width:3em;
+}
+main{
+    position:absolute;
+    right:5px;
+    bottom:5px;
+}
+canvas{
+    border:solid;
+    border-radius:5px;
+}
+body{
+    background-color:#c0c0c0;
+    font-family:Arial;
+}
+</style>
+<script>
+simulation = {};
+simulation.mu = 1.0;//mean
+simulation.sigma = 1;//standard deviation
+simulation.n = 1000;//number of points
+
+document.getElementById("MU-INPUT").value = simulation.mu.toString();
+document.getElementById("SIGMA-INPUT").value = simulation.sigma.toString();
+document.getElementById("N-INPUT").value = simulation.n.toString();
+
+function setup() {
+    squareWidth = 100;
+
+    if(innerWidth > innerHeight){
+        squareWidth = innerHeight - 100;
+    }
+    else{
+        squareWidth = innerWidth - 100;
+    }
+    
+    createCanvas(squareWidth, squareWidth);
+    stroke(0);
+    strokeWeight(10);
+    data = [];
+    for(var index = 0;index < simulation.n;index++){
+        gaussianrandom = randomGaussian(simulation.mu,simulation.sigma);
+        data.push(gaussianrandom);
+    }
+    frameRate(30);
+    noFill();
+}
+
+binCount = 100;
+numberofsigma = 5;
+let binRanges = [];
+let binCounts = [];
+let maxValue;
+
+fit = {};
+fit.mu = 1.0;//
+fit.sigma = 1.0;
+
+histogram = {};
+histogram.nbins = 101;
+histogram.totalwidth = 10.0;
+histogram.binwidth = histogram.totalwidth/histogram.nbins;
+histogram.center = 1.0;
+histogram.bincounts = new Array(histogram.nbins).fill(0);
+
+
+
+function draw(){
+    clear(0);
+    background(0);
+    data = [];
+    strokeWeight(5);
+    stroke(0,255,0);
+    for(var index = 0;index < simulation.n;index++){
+        datapoint = randomGaussian(simulation.mu,simulation.sigma);
+        data.push(datapoint);
+        point(map(datapoint,simulation.mu - 10*simulation.sigma,simulation.mu + 10*simulation.sigma,squareWidth,0),map(index,0,simulation.n,0,0.5*squareWidth));
+    }
+    strokeWeight(10);
+
+    for(var index = 0;index < histogram.nbins;index++){
+        histogram.bincounts[index] = 0;
+    }
+    
+    for(var index = 0;index < data.length;index++){
+        binindex = 0;
+        for(lowerbound = histogram.center - 0.5*(histogram.nbins - 1)*histogram.binwidth;lowerbound < histogram.center + 0.5*(histogram.nbins - 1)*histogram.binwidth;lowerbound += histogram.binwidth){
+            if(data[index] > lowerbound && data[index] < lowerbound + histogram.binwidth){
+                histogram.bincounts[binindex]++;
+            }
+            binindex++;
+        }        
+    }
+    for(var index = 0;index < histogram.nbins;index++){
+        line(map(index,0,histogram.nbins,0,squareWidth),squareWidth-200,map(index,0,histogram.nbins,0,squareWidth),map(histogram.bincounts[index],0,data.length,squareWidth-200,-3.5*squareWidth))
+    }
+    stroke(255,0,255);
+    beginShape();
+    for(var index = 0;index < histogram.nbins;index++){
+        vertex(map(index,0,histogram.nbins,0,squareWidth),map(histogram.bincounts[index],0,data.length,squareWidth-200,-3.5*squareWidth));
+    }
+    endShape();
+    
+}
+
+globalurl = window.location.href;
+codesquaresize = 100;
+qrcode = new QRCode(document.getElementById("QRCODE"), {
+	text: globalurl,
+	width: codesquaresize,
+	height: codesquaresize,
+	colorDark : "#000000",
+	colorLight : "#ffffff",
+	correctLevel : QRCode.CorrectLevel.H
+});
+</script>
+<body>    
+</body>
+</html>
+
+
+    
+    
