@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <!--
+ORGANIC WEB:SELF REPLICATING HTML!
+   -->
+   <!--Stop Google:-->
+<META NAME="robots" CONTENT="noindex,nofollow">
+<link href="data:image/x-icon;base6r4,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAP//AP///wANAP8A5Dz6ABueRwAAt/8A6BonABo86AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAREREREREREREREAAAEREREREQCIgREREd3dwAAB3d3d3d3d3d3d3d3d3d3d3d3d3VVVVVVVQAFVVAAVVVQIiBRAiIBEQIAIBECAAERAgAgFgIABmYCIiBmAiIGZgIiIGYCIgZmYCIAaIAAMzMzAAiIiIiIiIiIiIiIiIiIiIiIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" rel="icon" type="image/x-icon">
+   <title>GAUSSIAN NOISE ANALYZER</title>    
+   <script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            processEscapes: true,
+            processClass: "mathjax",
+            ignoreClass: "no-mathjax"
+            }
+        });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+    </script>   
+<script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
+</head>
+<DIV ID = "SCROLL">
+    <a href = "edit-index.html">edit-index.html</a>
+    <DIV ID = "APP-TITLE">
+        GAUSSIAN NOISE GENERATOR
+    </DIV>
+    <DIV ID = "APP-SUB-TITLE">
+        <I>THE NOISE IS THE SIGNAL!</I>
+    </DIV>
+    
+    <DIV ID = "QRCODE"></DIV>
+    <DIV ID = "DATA-CONTROL-BUTTONS">
+        <DIV CLASS = "BUTTON" ID = "SAVE-DATA-BUTTON">SAVE data.txt</DIV>
+    </DIV>
+    <TEXTAREA ID = "DATA-IO-PORT"></TEXTAREA>
+    <TABLE>
+        <TR>
+            <TD>$\mu_{simulate} = $</TD>
+            <TD>
+                <INPUT ID = "MU-INPUT">
+            </TD>
+            <TD>$\sigma_{simulate} = $</TD>
+            <TD>
+                <INPUT ID = "SIGMA-INPUT">
+            </TD>
+            <TD>$N = $</TD>
+            <TD>
+                <INPUT ID = "N-INPUT">
+            </TD>
+        </TR>
+    </TABLE>
+</DIV>
+<style>
+#SCROLL{
+    POSITION:ABSOLUTE;
+    LEFT:0PX;
+    TOP:0PX;
+}
+#DATA-IO-PORT{
+    WIDTH:20EM;
+    DISPLAY:BLOCK;
+    HEIGHT:10EM;
+    FONT-FAMILY:COURIER;
+    BACKGROUND-COLOR:#101010;
+    COLOR:#00FF00;
+}
+.BUTTON{
+    BORDER:SOLID;
+    CURSOR:POINTER;
+    WIDTH:10EM;
+    BORDER-RADIUS:5PX;
+    TEXT-ALIGN:CENTER;
+}
+.BUTTON:HOVER{
+    BACKGROUND-COLOR:#00FF0080;
+}
+.BUTTON:ACTIVE{
+    BACKGROUND-COLOR:#FFDE2180;
+}
+INPUT{
+    width:3em;
+}
+main{
+    position:absolute;
+    right:5px;
+    bottom:5px;
+}
+canvas{
+    border:solid;
+    border-radius:5px;
+}
+body{
+    background-color:#b7b1ae;
+    font-family:Arial;
+}
+</style>
+<script>
+
+if(innerWidth > innerHeight){
+    document.getElementById("SCROLL").style.width = (innerHeight - innerWidth - 20).toString() + "px";
+    document.getElementById("SCROLL").style.height = (innerHeight - 20).toString() + "px";
+
+}
+else{
+    document.getElementById("SCROLL").style.width = (innerWidth - 20).toString() + "px";
+    document.getElementById("SCROLL").style.height = (innerHeight - innerWidth - 20).toString() + "px";
+}
+
+simulation = {};
+//simulation.mu = 1.0;//mean
+//simulation.sigma = 1;//standard deviation
+//simulation.n = 1000;//number of points
+//savejson();
+
+document.getElementById("SAVE-DATA-BUTTON").onclick = function(){
+    document.getElementById("DATA-IO-PORT").value = JSON.stringify(data,null,"    ");
+    var httpc = new XMLHttpRequest();
+    httpc.open("POST", "save-file.php", true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+    httpc.send("data="+encodeURIComponent(JSON.stringify(data,null,"    "))+"&filename=data.txt");//send text to save-file.php
+}
+
+document.getElementById("MU-INPUT").onchange = function(){
+    simulation.mu = parseFloat(this.value);
+    savejson();
+}
+
+document.getElementById("SIGMA-INPUT").onchange = function(){
+    simulation.sigma = parseFloat(this.value);
+    savejson();
+}
+document.getElementById("N-INPUT").onchange = function(){
+    simulation.n = parseFloat(this.value);
+    savejson();
+}
+
+
+function setup() {
+    squareWidth = 100;
+
+    if(innerWidth > innerHeight){
+        squareWidth = innerHeight - 20;
+    }
+    else{
+        squareWidth = innerWidth - 20;  
+    }
+    createCanvas(squareWidth, squareWidth);
+    stroke(0);
+    strokeWeight(10);
+    data = [];
+    for(var index = 0;index < simulation.n;index++){
+        gaussianrandom = randomGaussian(simulation.mu,simulation.sigma);
+        data.push(gaussianrandom);
+    }
+    frameRate(30);
+    noFill();
+    var httpc = new XMLHttpRequest();
+
+    simulation = {};
+    httpc.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            simulation = JSON.parse(this.responseText);
+            document.getElementById("MU-INPUT").value = simulation.mu.toString();
+            document.getElementById("SIGMA-INPUT").value = simulation.sigma.toString();
+            document.getElementById("N-INPUT").value = simulation.n.toString();
+
+        }
+    };
+    httpc.open("GET", "load-file.php?filename=simulation.txt", true);
+    httpc.send();
+    
+}
+
+
+
+function draw(){
+    clear(0);
+    background(0);
+    data = [];
+    strokeWeight(5);
+    stroke(0,255,0);
+    for(var index = 0;index < simulation.n;index++){
+        datapoint = randomGaussian(simulation.mu,simulation.sigma);
+        data.push(datapoint);
+        point(map(datapoint,simulation.mu - 10*simulation.sigma,simulation.mu + 10*simulation.sigma,squareWidth,0),map(index,0,simulation.n,0,squareWidth));
+    }
+    strokeWeight(10);
+
+}
+
+
+function savejson(){
+    var httpc = new XMLHttpRequest();
+    httpc.open("POST", "save-file.php", true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+    httpc.send("data="+encodeURIComponent(JSON.stringify(simulation,null,"    "))+"&filename=simulation.txt");//send text to save-file.php
+
+}
+globalurl = window.location.href;
+codesquaresize = 100;
+qrcode = new QRCode(document.getElementById("QRCODE"), {
+	text: globalurl,
+	width: codesquaresize,
+	height: codesquaresize,
+	colorDark : "#000000",
+	colorLight : "#ffffff",
+	correctLevel : QRCode.CorrectLevel.H
+});
+</script>
+<body>    
+</body>
+</html>
+
+
+    
+    
