@@ -2,6 +2,7 @@
     "html": [
         "README.md",
         "branch.html",
+        "data.txt",
         "delete-html.html",
         "delete-php.html",
         "dna.txt",
