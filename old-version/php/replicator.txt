@@ -1,31 +1,25 @@
 <?php
+$dnaurl = "https://raw.githubusercontent.com/LafeLabs/ORGANIC-WEB/refs/heads/main/dna.txt";
 
-$dnaraw = file_get_contents("../dna.json");
+if(isset($_GET["dna"])){
+    $dnaurl = $_GET["dna"];
+}
+
+$baseurl = explode("dna.txt",$dnaurl)[0];
+$dnaraw = file_get_contents($dnaurl);
 $dna = json_decode($dnaraw);
-$baseurl = "../";
 
 mkdir("php");
 
-copy("../php/local-replicator.txt","replicator.php");
+copy("https://raw.githubusercontent.com/LafeLabs/ORGANIC-WEB/refs/heads/main/php/replicator.txt","replicator.php");
+
 
 foreach($dna->html as $value){
+    
     copy($baseurl.$value,$value);
+
 }
-foreach($dna->css as $value){
-    copy($baseurl.$value,$value);
-}
-foreach($dna->js as $value){
-    copy($baseurl.$value,$value);
-}
-foreach($dna->json as $value){
-    copy($baseurl.$value,$value);
-}
-foreach($dna->md as $value){
-    copy($baseurl.$value,$value);
-}
-foreach($dna->text as $value){
-    copy($baseurl.$value,$value);
-}
+
 
 foreach($dna->php as $value){
  
@@ -33,8 +27,6 @@ foreach($dna->php as $value){
     copy($baseurl."php/".$value,explode(".",$value)[0].".php");
 
 }
-    
-
 
 ?>
 <a href = "index.html">CLICK ME(3/3)</a>

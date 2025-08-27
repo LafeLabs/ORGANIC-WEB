@@ -1,23 +1,36 @@
 <?php
-$dnaurl = "https://raw.githubusercontent.com/LafeLabs/ORGANIC-WEB/refs/heads/main/dna.txt";
+$dnaurl = "https://raw.githubusercontent.com/lafelabs/ORGANIC-WEB/refs/heads/main/dna.json";
 
 if(isset($_GET["dna"])){
     $dnaurl = $_GET["dna"];
 }
 
-$baseurl = explode("dna.txt",$dnaurl)[0];
+$baseurl = explode("dna.json",$dnaurl)[0];
 $dnaraw = file_get_contents($dnaurl);
 $dna = json_decode($dnaraw);
 
 mkdir("php");
 
-copy("https://raw.githubusercontent.com/LafeLabs/ORGANIC-WEB/refs/heads/main/php/replicator.txt","replicator.php");
+copy("https://raw.githubusercontent.com/lafefspietz/ORGANIC-WEB/refs/heads/main/php/replicator.txt","replicator.php");
 
 
 foreach($dna->html as $value){
-    
     copy($baseurl.$value,$value);
-
+}
+foreach($dna->css as $value){
+    copy($baseurl.$value,$value);
+}
+foreach($dna->js as $value){
+    copy($baseurl.$value,$value);
+}
+foreach($dna->json as $value){
+    copy($baseurl.$value,$value);
+}
+foreach($dna->md as $value){
+    copy($baseurl.$value,$value);
+}
+foreach($dna->text as $value){
+    copy($baseurl.$value,$value);
 }
 
 
