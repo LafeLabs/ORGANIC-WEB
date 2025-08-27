@@ -1,4 +1,35 @@
-# Organic Web README.md
+# [Organic Web README.md](https://github.com/LafeLabs/ORGANIC-WEB)
+
+The organic web is an operating system independent self-replicating and self-editing set of files from the following formats:
+
+ - [HTML](https://en.wikipedia.org/wiki/HTML)
+ - [CSS](https://en.wikipedia.org/wiki/CSS)
+ - [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
+ - [Markdown](https://en.wikipedia.org/wiki/Markdown)
+ - [JSON](https://en.wikipedia.org/wiki/JSON)
+ - [PHP](https://en.wikipedia.org/wiki/PHP)
+ - [LaTeX](https://en.wikipedia.org/wiki/LaTeX)
+ - [Text](https://en.wikipedia.org/wiki/Text_file)
+
+This system can be used to publish any media on any hardware and any software. It can be used for scientific publication, writing and distributing a wide range of application software, journalism, music distribution, social media, and arbitrary media distribution of all kinds.
+
+To run on a Windows or Mac computer, install [XAMPP](https://www.apachefriends.org/) and put the set into the web folder.  To install on a linux machine, copy the following commands into the terminal one by one:
+
+```
+sudo apt update
+sudo apt install apache2 -y
+sudo apt install php libapache2-mod-php -y
+cd /var/www/html
+sudo rm index.html
+sudo apt-get install curl
+sudo curl -o replicator.php https://raw.githubusercontent.com/LafeLabs/ORGANIC-WEB/refs/heads/main/php/replicator.txt
+cd ..
+sudo chmod -R 0777 *
+cd html
+php replicator.php
+sudo chmod -R 0777 *
+ln -s /var/www/html ~/Desktop/html
+```
 
 # Edit files
 
@@ -22,38 +53,6 @@
  - [delete-markdown-files.html](delete-markdown-files.html)
  - [delete-php-files.html](delete-php-files.html)
  - [delete-images.html](delete-images.html)
-
-# Other HTML
-
- - [branch.html](branch.html)
- - [image-feed.html](image-feed.html)
- - [index.html](index.html)
- - [qrcode.html](qrcode.html)
-
-# CSS FILES
-
- - [markdown.css](markdown.css)
-
-# JAVASCRIPT FILES
-
- - [track-list.js](track-list.js)
-
-# JSON FILES
-
- - [dna.json](dna.json)
- - [links.json](links.json)
-
-# MARKDOWN FILES
-
- - [README.md](README.md)
- - [files.md](files.md)
- - [markdown.md](markdown.md)
-
-# TEXT FILES
-
- - [note.txt](note.txt)
- - [terminal.txt](terminal.txt)
- - [wall.txt](wall.txt)
 
 # PHP FILES AS TEXT
 
