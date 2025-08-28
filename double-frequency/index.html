@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <!--
+Mouse control of xy.json file to pass data to other applications on server side system
+
+xy = {}
+xy.x = x from 0 to 1
+xy.y = y from 0 to 1
+
+-->
+
+
+<link href="data:image/x-icon;base6r4,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAP//AP///wANAP8A5Dz6ABueRwAAt/8A6BonABo86AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAREREREREREREREAAAEREREREQCIgREREd3dwAAB3d3d3d3d3d3d3d3d3d3d3d3d3VVVVVVVQAFVVAAVVVQIiBRAiIBEQIAIBECAAERAgAgFgIABmYCIiBmAiIGZgIiIGYCIgZmYCIAaIAAMzMzAAiIiIiIiIiIiIiIiIiIiIiIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" rel="icon" type="image/x-icon">
+   <title>Mouse-xy</title>    
+<script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.js"></script>   
+</head>
+<body> 
+<a id = "editlink" href = "edit-index.html">edit-index.html</a>
+<style>
+body{
+    font-family:Arial;
+}
+#editlink{
+    position:absolute;
+    left:5px;
+    top:5px;
+    z-index:2;
+    color:blue;
+    font-size:2em;
+}
+main{
+    border:solid;
+    position:absolute;
+    left:100px;
+    top:100px;
+}
+</style>
+<script>
+
+var mic,fft;
+filterFrequency = 1000;//Hz
+filterWidth = 100;//Hz
+gain = 1.5;
+
+
+function setup() {
+  mic = new p5.AudioIn();
+  mic.start();
+  //analyzer.setInput(mic);
+    
+  fft = new p5.FFT();
+  fft.setInput(mic);
+  osc = new p5.SinOsc(); // set frequency and type
+  osc.amp(1.0);   
+  osc.freq(1000);    
+  createCanvas(innerWidth - 200, innerHeight - 200);    
+  strokeWeight(1);  
+  background(128,128,128);
+  noFill();
+  stroke(0);
+  fill(0);
+  textSize(50);
+}
+
+xy = {};
+xy.x = 0;// from 0 to 1
+xy.y = 0;// from 0 to 1
+
+function draw(){
+    
+    spectrum = fft.analyze();
+    nyquistFreq = sampleRate() / 2;
+    binFreq = nyquistFreq / (spectrum.length);
+    khz = Math.round(1000/binFreq);
+    
+    background(128,128,128);//half way between black and white, grey
+    xy.x = mouseX/width;// from 0 to 1
+    xy.y = (height - mouseY)/height;// from 0 to 1
+    //limit to the range from 0 to 1
+    if(xy.x > 1){
+        xy.x = 1;
+    }
+    if(xy.x < 0){
+        xy.x = 0;
+    }
+    if(xy.y > 1){
+        xy.y = 1;
+    }
+    if(xy.y < 0){
+        xy.y = 0;
+    }
+    xy.x = round(xy.x*1000)/1000;//round to 3 digits
+    xy.y = round(xy.y*1000)/1000;//round to 3 digits
+    savejson();//save json file
+
+    osc.amp(Math.sqrt(xy.y*0.1));   
+//    osc.freq(2000*xy.x);    
+
+    textSize(50);
+    fill("red");
+    stroke("red");
+    text("x = " + xy.x.toString(),100,100);
+    textSize(25);
+    for(var index = 1;index < 10;index++){
+        line(index*width/10,height,index*width/10,0);
+        text((index/10).toString(),index*width/10 + 10,height - 10);
+        text((index/10).toString(),index*width/10 + 10, 30);
+    }
+    textSize(50);
+    fill("blue");
+    stroke("blue");
+    text("y = " + xy.y.toString(),100,200);
+    textSize(25);
+    for(var index = 1;index < 10;index++){
+        line(0,index*height/10,width,index*height/10);
+        text(((10 - index)/10).toString(),10,index*height/10 - 10);
+        text(((10 - index)/10).toString(),width - 50,index*height/10 - 10);
+
+    }
+
+
+    stroke("black");
+    fill("black");
+    noFill();
+    circle(mouseX,mouseY,50);
+    line(mouseX,mouseY - 50,mouseX,mouseY + 50);
+    line(mouseX - 50,mouseY,mouseX + 50,mouseY);
+
+    beginShape();
+    vertex(0,height);
+    stroke(0);
+    for (let i = 0; i < spectrum.length; i++) {
+        vertex(i, map(spectrum[i], 0, 255, height, 0));
+    }
+    vertex(width,height);
+    endShape();
+    khzpower = spectrum[khz];
+    doublepower = spectrum[2*khz];
+    triplepower = spectrum[3*khz];
+
+    text("freq power = " + khzpower.toString(),100,300);
+    text("double freq power = " + doublepower.toString(),100,400);
+    text("triple freq power = " + triplepower.toString(),100,500);
+
+}
+
+function savejson(){
+    var httpc = new XMLHttpRequest();
+    httpc.open("POST", "save-file.php", true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc.send("data="+encodeURIComponent(JSON.stringify(xy,null,"    "))+"&filename=xy.json");//send text to save-file.php
+}
+
+oscon = false;
+function mouseClicked() {
+ 
+ if(mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height){
+      if(!oscon){
+          osc.start();
+
+      }
+      else{
+          osc.stop();
+
+      }
+      oscon = !oscon;     
+ } 
+
+    
+}
+
+
+</script>
+</body>
+</html>
+
+
+    
+    
