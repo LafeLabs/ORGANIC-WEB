@@ -3,36 +3,63 @@
 <head>
    <meta charset="utf-8">
    <!--
-Mouse control of xy.json file to pass data to other applications on server side system
-
-xy = {}
-xy.x = x from 0 to 1
-xy.y = y from 0 to 1
-
+a radio frequency harmonic signal generator and a radio frequency noise generator are sent into a quantum system which is controlled by means of an audio frequency signal and response is measured with an AM receiver. the resulting audio signal is analyzed and fed back to control of the quantum system, for real time feedback with the quantum system with the human body and mind in the feedback loop
 -->
 
 
 <link href="data:image/x-icon;base6r4,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAP//AP///wANAP8A5Dz6ABueRwAAt/8A6BonABo86AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAREREREREREREREAAAEREREREQCIgREREd3dwAAB3d3d3d3d3d3d3d3d3d3d3d3d3VVVVVVVQAFVVAAVVVQIiBRAiIBEQIAIBECAAERAgAgFgIABmYCIiBmAiIGZgIiIGYCIgZmYCIAaIAAMzMzAAiIiIiIiIiIiIiIiIiIiIiIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" rel="icon" type="image/x-icon">
-   <title>Mouse-xy</title>    
+   <title>Quantum Noise-O-Tron</title>    
    <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
 </head>
 <body> 
+<h1 id = "title">QUANTUM NOISE-O-TRON</h1>
 <a id = "editlink" href = "edit-index.html">edit-index.html</a>
 <a id = "editlink2" href = "edit-web-files.html">edit-web-files.html</a>
+<img class = "instrument" id = "spectrum_analyzer" src = "20250902_125148.jpg">
+<img class = "instrument" id = "audio_generator" src = "20250902_125454.jpg">
+<img class = "instrument" id = "radio_signal_generator" src = "20250902_125318.jpg">
 
-<div id = "help">
-    Move mouse in rectangle to set x and y, scroll mouse wheel to set z, click to lock. Data saved in <a href = "xy.json">xy.json</a>.
-</div>
 <style>
+.instrument{
+    position:absolute;
+    max-width:300px;
+    z-index:1;
+}
+#spectrum_analyzer{
+    right:250px;
+    top:45%;
+}
+#audio_generator{
+    top:45%;
+    left:10px;
+}
+#radio_signal_generator{
+    bottom:10px;
+    left:35%;
+    max-width:400px;
+}
+a{
+    color:#ff2cb4;
+}
 body{
     font-family:Arial;
+    overflow:hidden;
+    background-color:black;
+}
+#title{
+    position:absolute;
+    width:100%;
+    z-index:-1;
+    color:#00ff00;
+    top:0px;
+    left:0px;
+    text-align:center;
 }
 #editlink{
     position:absolute;
     left:5px;
     top:5px;
     z-index:2;
-    color:blue;
     font-size:2em;
 }
 #editlink2{
@@ -40,125 +67,79 @@ body{
     right:5px;
     top:5px;
     z-index:2;
-    color:blue;
     font-size:2em;
 }
 main{
     border:solid;
     position:absolute;
-    left:100px;
+    left:10px;
     top:100px;
-}
-#help{
-    position:absolute;
-    left:5px;
-    right:5px;
-    bottom:5px;
-    height:70px;
-    border:solid;
-    font-family:courier;
-    font-size:16px;
 }
 </style>
 <script>
 function setup() {
 
-  createCanvas(innerWidth - 200, innerHeight - 200);    
+  createCanvas(innerWidth - 20, innerHeight - 110);    
   strokeWeight(1);  
-  background(128,128,128);
+  background(200);
   noFill();
   stroke(0);
   fill(0);
   textSize(50);
 }
 
-xy = {};
-xy.x = 0;// from 0 to 1
-xy.y = 0;// from 0 to 1
-xy.z = 0;// integers with no bound, always restarts to zero on reload then scrolls up and down
 
-lock = false;
-
+frameindex =0;
 function draw(){
-    if(!lock){
-        background(240,240,240);//half way between black and white, grey
-        xy.x = mouseX/width;// from 0 to 1
-        xy.y = (height - mouseY)/height;// from 0 to 1
-        //limit to the range from 0 to 1
-        if(xy.x > 1){
-            xy.x = 1;
-        }
-        if(xy.x < 0){
-            xy.x = 0;
-        }
-        if(xy.y > 1){
-            xy.y = 1;
-        }
-        if(xy.y < 0){
-            xy.y = 0;
-        }
-        xy.x = round(xy.x*1000)/1000;//round to 3 digits
-        xy.y = round(xy.y*1000)/1000;//round to 3 digits
-        savejson();//save json file
-    
-        textSize(50);
-        fill("red");
-        stroke("red");
-        text("x = " + xy.x.toString(),100,100);
-        textSize(25);
-        for(var index = 1;index < 10;index++){
-            line(index*width/10,height,index*width/10,0);
-            text((index/10).toString(),index*width/10 + 10,height - 10);
-            text((index/10).toString(),index*width/10 + 10, 30);
-        }
-        textSize(50);
-        fill("green");
-        stroke("green");
-        text("y = " + xy.y.toString(),100,200);
-        textSize(25);
-        for(var index = 1;index < 10;index++){
-            line(0,index*height/10,width,index*height/10);
-            text(((10 - index)/10).toString(),10,index*height/10 - 10);
-            text(((10 - index)/10).toString(),width - 50,index*height/10 - 10);
-        }
-    
-        stroke("black");
-        fill("black");
-        noFill();
-        circle(mouseX,mouseY,50);
-        line(mouseX,mouseY - 50,mouseX,mouseY + 50);
-        line(mouseX - 50,mouseY,mouseX + 50,mouseY);
-        textSize(50);
-        fill("blue");
-        stroke("blue");
-    
-        text("z = " + xy.z.toString(), 100, 300);
-    }
-}
+  background(200);
+  frameindex++;
 
-function savejson(){
-    var httpc = new XMLHttpRequest();
-    httpc.open("POST", "save-file.php", true);
-    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpc.send("data="+encodeURIComponent(JSON.stringify(xy,null,"    "))+"&filename=xy.json");//send text to save-file.php
-}
-
-direction = '';
-function mouseWheel(event) {
-  if (event.delta > 0) {
-    direction = 'mouse wheel down';
-    xy.z--;
-  } else {
-    direction = 'mouse wheel up';
-    xy.z++;
+  stroke("red");
+  noFill();
+  beginShape();
+  strokeWeight(10);
+  for (var y = height - 10; y > height/2; y--){
+     vertex(width/2 + 20*Math.cos((2*Math.PI*y/100) + 0.1*frameindex),y);
   }
-  // Uncomment to prevent any default behavior.
-  // return false;
+  endShape();
+
+
+  stroke("blue");
+  noFill();
+  beginShape();
+  strokeWeight(10);
+  for (var x = 10; x < width/2; x++){
+     vertex(x,height/2 + 20*Math.cos((2*Math.PI*x/100) - 0.1*frameindex));
+  }
+  endShape();
+  stroke("green");
+  noFill();
+  beginShape();
+  strokeWeight(10);
+  for (var x = width/2 + 300; x < width; x++){
+     vertex(x,height/2 + 20*Math.cos((2*Math.PI*x/100) - 0.1*frameindex));
+  }
+  endShape();
+
+  stroke("#ff00ff");
+  noFill();
+  beginShape();
+  strokeWeight(30);
+  for (var x = width/2; x < width/2 + 300; x++){
+     vertex(x,height/2 + 20*Math.cos((2*Math.PI*x/100) - 0.1*frameindex));
+  }
+  endShape();
+
+  stroke("#ff00ff");
+  fill("#ff00ff");
+  circle(width/2,height/2,100 + 25*Math.cos(frameindex*Math.PI*2/50));
+  if(frameindex >= 1e5){
+    frameindex = 0;
+  }
+  
+  
 }
 
-function mouseClicked() {
-  lock = !lock;
-}
 
 </script>
 </body>

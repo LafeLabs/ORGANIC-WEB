@@ -1,5 +1,5 @@
 <p style = "font-size:5em">
-    <a href = "freebox.html">FREEBOX</a>
+    <a href = "image-feed.html">image-feed.html</a>
 </p>
 
 <p style = "font-size:5em">

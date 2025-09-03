@@ -2,6 +2,7 @@
 # HTML FILES
 
  - [branch.html](branch.html)
+ - [control-xyz.html](control-xyz.html)
  - [delete-images.html](delete-images.html)
  - [delete-markdown-files.html](delete-markdown-files.html)
  - [delete-php-files.html](delete-php-files.html)
@@ -13,6 +14,7 @@
  - [edit-readme.html](edit-readme.html)
  - [edit-text-files.html](edit-text-files.html)
  - [edit-web-files.html](edit-web-files.html)
+ - [image-feed.html](image-feed.html)
  - [index.html](index.html)
  - [list-files.html](list-files.html)
  - [organic-web-home.html](organic-web-home.html)
@@ -34,6 +36,7 @@
 
  - [dna.json](dna.json)
  - [links.json](links.json)
+ - [xy.json](xy.json)
 
 # MARKDOWN FILES
 
