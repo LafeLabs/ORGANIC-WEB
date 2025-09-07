@@ -90,10 +90,45 @@ function setup() {
 
 
 frameindex =0;
+xy = {};
+xy.x = 0;// from 0 to 1
+xy.y = 0;// from 0 to 1
+xy.z = 0;// integers with no bound, always restarts to zero on reload then scrolls up and down
+
+lock = false;
+
+voltage_offset_max = 100;
+voltage_offset_min = -100;
+voltage_offset = voltage_offset_min;
+
+audio_sine_amplitude_max = 100;
+audio_sine_amplitude_min = 1;
+audio_sine_amplitude = audio_sine_amplitude_min;
+radio_signal_power_min = 1;
+radio_signal_power_min = 100;
+
 function draw(){
   background(200);
   frameindex++;
+    xy.x = mouseX/width;// from 0 to 1
+    xy.y = (height - mouseY)/height;// from 0 to 1
+    //limit to the range from 0 to 1
+    if(xy.x > 1){
+        xy.x = 1;
+    }
+    if(xy.x < 0){
+        xy.x = 0;
+    }
+    if(xy.y > 1){
+        xy.y = 1;
+    }
+    if(xy.y < 0){
+        xy.y = 0;
+    }
+    xy.x = round(xy.x*1000)/1000;//round to 3 digits
+    xy.y = round(xy.y*1000)/1000;//round to 3 digits
 
+  
   stroke("red");
   noFill();
   beginShape();
@@ -130,6 +165,7 @@ function draw(){
   }
   endShape();
 
+
   stroke("#ff00ff");
   fill("#ff00ff");
   circle(width/2,height/2,100 + 25*Math.cos(frameindex*Math.PI*2/50));
@@ -138,6 +174,23 @@ function draw(){
   }
   
   
+}
+
+direction = '';
+function mouseWheel(event) {
+  if (event.delta > 0) {
+    direction = 'mouse wheel down';
+    xy.z--;
+  } else {
+    direction = 'mouse wheel up';
+    xy.z++;
+  }
+  // Uncomment to prevent any default behavior.
+  // return false;
+}
+
+function mouseClicked() {
+  lock = !lock;
 }
 
 
