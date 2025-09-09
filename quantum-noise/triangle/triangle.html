@@ -104,6 +104,8 @@ function setup() {
 
   createCanvas(squaresize, squaresize);    
    strokeWeight(2);  
+   background("#F8F0E3");
+   background("black");
    noise = new p5.Noise();   
    fft = new p5.FFT();
      
@@ -121,12 +123,12 @@ pwave = [];
 
 xstep= 2;
 function draw(){
-
-  background(200);    
+    
   photonenergy = Math.abs((squaresize - mouseY)/4);
 //  T = Math.abs(mouseX/20); 
 //  period = Math.abs(40*mouseX/squaresize);
   frameRate(20);
+  clear();
   strokeWeight(6);
   noFill();
   
@@ -216,71 +218,10 @@ function draw(){
         xindex = 0;
         vwave = [];
         pwave = [];
-        png64 = document.getElementById("defaultCanvas0").toDataURL("image/png");
-        var timestamp = Math.round((new Date().getTime())/1000).toString();
-        var httpc = new XMLHttpRequest();
-        
-        var url = "save-png.php";        
-        httpc.open("POST", url, true);
-        httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        httpc.send("data="+encodeURIComponent(png64.substring(22))+"&filename=square" + timestamp +  ".png");//send text to filesaver.php
-         //location.reload(); 
-         
-        newfilename = "square" + timestamp +  ".png";
-        
-        var newbox = document.createElement("DIV");
-        newbox.classList.add("imagebox");         
-        
-        var deletespan = document.createElement("SPAN");
-        deletespan.innerHTML = "X";
-        deletespan.classList.add("deletespan");
-        deletespan.onclick = function(){
-            //delete the parent div of the image
-            //delete the file
-            var filename = this.parentElement.getElementsByClassName("filelabel")[0].innerHTML; 
-            var httpc = new XMLHttpRequest();
-            var url = "delete-file.php";         
-            httpc.open("POST", url, true);
-            httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-            httpc.send("filename=" + filename);//send text to deletefile.php
-            this.parentElement.parentElement.removeChild(this.parentElement);
-        }
-        
-        newbox.appendChild(deletespan);
-    
-        var newdiv = document.createElement("DIV");
-        newdiv.innerHTML = newfilename;
-        newdiv.className = "filelabel";
-        newbox.appendChild(newdiv);
-    
-        var newimg = document.createElement("IMG");
-        newimg.src = png64;
-        newimg.classList.add("uploadimage");
-        newimg.classList.add("button");
-        newbox.appendChild(newimg);    
-    
-    
-        document.getElementById("feedscroll").insertBefore(newbox,document.getElementById("feedscroll").getElementsByClassName("imagebox")[0]);
-        
-        
     }
 }
 
 
-
-
-
-document.body.onclick = function(){
-    if(noiseon == false){
-        noise.start();
-        noiseon = true;
-    }
-    else{
-        noise.stop();
-        noiseon = false;
-        
-    }
-}
 
 codesquaresize = 170;
 globalurl = window.location.href;
@@ -294,59 +235,6 @@ qrcode = new QRCode(document.getElementById("qrcode"), {
 });
 
 
-
-upuploadImages = [];
-var httpc9 = new XMLHttpRequest();
-    httpc9.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        upuploadImages = JSON.parse(this.responseText);
-        for(var index = upuploadImages.length - 1;index >= 0;index--) {
-            if(upuploadImages[index].includes(".png") && upuploadImages[index].includes("square")){
-                var newbox = document.createElement("DIV");
-                newbox.classList.add("imagebox");         
-                
-                var deletespan = document.createElement("SPAN");
-                deletespan.innerHTML = "X";
-                deletespan.classList.add("deletespan");
-                deletespan.onclick = function(){
-                    //delete the parent div of the image
-                    //delete the file
-                    var filename = this.parentElement.getElementsByClassName("filelabel")[0].innerHTML; 
-                    var httpc = new XMLHttpRequest();
-                    var url = "delete-file.php";         
-                    httpc.open("POST", url, true);
-                    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-                    httpc.send("filename=" + filename);//send text to deletefile.php
-                    this.parentElement.parentElement.removeChild(this.parentElement);
-                }
-                
-                newbox.appendChild(deletespan);
-        
-                var newdiv = document.createElement("DIV");
-                newdiv.innerHTML = upuploadImages[index];
-                newdiv.className = "filelabel";
-                newbox.appendChild(newdiv);
-            
-                
-                document.getElementById("feedscroll").appendChild(newbox);
-                var newimg = document.createElement("IMG");
-                newimg.src = upuploadImages[index];
-                newimg.classList.add("uploadimage");
-                newimg.classList.add("button");
-                newbox.appendChild(newimg);
-                
-                newimg.onclick = function(){
-                    img = loadImage(this.src);
-                    loadImage(this.src, img => {
-                        image(img, 0, 0,squareWidth-50,squareWidth-70);
-                    });
-                }
-            }
-        }
-    }
-};
-httpc9.open("GET", "list-files.php", true);
-httpc9.send();
 </script>
 <style>
 body{
@@ -365,7 +253,6 @@ main{
     position:absolute;
     left:0px;
     top:0px;
-    Z-INDEX:1000000;
 }
 #scroll{
     position:absolute;

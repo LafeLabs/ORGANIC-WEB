@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--
+    -->
+        <title>noise modulator</title>
+<link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQEQAAAAAAEAAAEAAAAAEAAAABAAAAEAAAAAAQAAEAAAAAAAEAEAAAAAAAABD//wAA//8AAP//AAAAAAAA/v8AAP7/AAD+/wAA/v8AAP7/AAD+/wAA+D8AAPbfAADu7wAA3vcAAL77AAB+/QAA" rel="icon" type="image/x-icon">
+
+    <!--Stop Google:-->
+    <META NAME="robots" CONTENT="noindex,nofollow">
+<!--geometron javascript library-->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script>
+            MathJax.Hub.Config({
+                tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                processEscapes: true,
+                processClass: "mathjax",
+                ignoreClass: "no-mathjax"
+                }
+            });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+        </script>
+   <script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<div id = "scroll">
+    <div id = "qrcode"></div>
+    <p>
+    <a href = "edit-index.html">EDIT CODE</a>
+    </p>
+    <p>
+    </p>
+    <div id = "feedscroll"></div>
+</div>
+<script>
+
+graphsize = 100;
+
+if(innerWidth > innerHeight){
+    squaresize = innerHeight;
+    document.getElementById("scroll").style.width = (innerWidth - innerHeight).toString() + "px";
+    document.getElementById("scroll").style.top = "0px";
+}
+else{
+    squaresize = innerWidth;
+    document.getElementById("scroll").style.top = squaresize.toString() + "px";
+    document.getElementById("scroll").style.left = "0px";    
+}
+
+
+n = 1;
+
+
+function setup() {
+  createCanvas(squaresize, squaresize);    
+  strokeWeight(2);  
+  textSize(70);
+}
+
+
+timeindex = 0;
+nwave = [];
+function draw(){
+  background(0);
+  
+  number_of_channels = mouseX*1000;
+  exponent = map(mouseY,height,0,-6,-3);
+  transmission = 10**exponent;
+//  0.01;
+  n = 0;
+  for(var index = 0;index < number_of_channels;index++){
+      if(random() < transmission){
+          n +=1;
+      }
+  }
+  nwave.push(n);
+  stroke("#00ff00");
+  fill("#00ff00");
+  text("n = " + n.toString(),30,60);
+  text(number_of_channels.toString() +  " channels",30,130);
+  text("t = " + transmission.toString(),30,190);
+
+  for(var index = 0;index < n;index++){
+      circle(random(0,width),random(height/2,height),10);
+  }
+  circle(timeindex,map(n,0,10000,height/2,0),10);
+  noFill();
+  beginShape();
+  for(var index = 0;index < nwave.length;index++){
+      vertex(index*5,map(nwave[index],0,10000,height/2,0));
+  }
+  endShape();
+
+  timeindex +=5;
+  if(timeindex > width){
+      timeindex = 0;
+      make_n_histogram();
+      nwave = [];
+
+  }
+}
+
+function make_n_histogram(){
+    
+}
+
+codesquaresize = 170;
+globalurl = window.location.href;
+qrcode = new QRCode(document.getElementById("qrcode"), {
+	text: globalurl,
+	width: codesquaresize,
+	height: codesquaresize,
+	colorDark : "#000000",
+	colorLight : "#ffffff",
+	correctLevel : QRCode.CorrectLevel.H
+});
+
+</script>
+<style>
+body{
+    overflow:hidden;
+/*    background-color:#F8F0E3;*/
+    background-color:#eeeeee;
+    font-family:Arial;
+}
+main{
+    position:absolute;
+    left:0px;
+    top:0px;
+    z-index:2;
+}
+#equation1{
+    position:absolute;
+    left:0px;
+    top:0px;
+    Z-INDEX:1000000;
+}
+#scroll{
+    position:absolute;
+    right:0px;
+    bottom:0px;
+    overflow:scroll;
+}
+#scroll img{
+    max-width:80%;
+    display:block;
+    margin:auto;
+}
+
+
+
+
+p{
+    margin:1em 1em 1em 1em;
+    font-size:1.5em;
+    font-family:Arial;
+    overflow:scroll;
+}
+h1,h2,h3{
+    font-family:Arial;
+    text-align:center;
+    overflow:scroll;
+
+}
+a{
+    color:blue;
+    font-family:Arial;
+    font-size:1.5em;    
+    overflow:scroll;
+}
+
+
+.deletespan{
+    color:red;
+    border:solid;
+    border-color:red;
+    border-radius:0.5em;
+    padding: 1em 1em 1em 1em;
+    cursor:pointer;
+}
+.deletespan:hover{
+    background-color:#ff000080;
+}
+.filelabel{
+    display:none;
+}
+.button{
+    cursor:pointer;
+}
+.button:hover{
+    background-color:green;
+}
+.button:active{
+    background-color:yellow;
+}
+.data{
+    display:none;
+}
+</style>
+</body>
+</html>
