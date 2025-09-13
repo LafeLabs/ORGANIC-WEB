@@ -12,53 +12,29 @@
 <!--geometron javascript library-->
     <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script>
-            MathJax.Hub.Config({
-                tex2jax: {
-                inlineMath: [['$','$'], ['\\(','\\)']],
-                processEscapes: true,
-                processClass: "mathjax",
-                ignoreClass: "no-mathjax"
-                }
-            });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
-        </script>
-   <script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-<div id = "scroll">
-    <div id = "qrcode"></div>
-    <p>
-    <a href = "edit-index.html">EDIT CODE</a>
-    </p>
-    <p>
-    </p>
-    <div id = "feedscroll"></div>
+<div id = "whitesquare">
+<div id = "qrcode"></div>
 </div>
 <script>
 
 graphsize = 100;
 
-if(innerWidth > innerHeight){
-    squaresize = innerHeight;
-    document.getElementById("scroll").style.width = (innerWidth - innerHeight).toString() + "px";
-    document.getElementById("scroll").style.top = "0px";
-}
-else{
-    squaresize = innerWidth;
-    document.getElementById("scroll").style.top = squaresize.toString() + "px";
-    document.getElementById("scroll").style.left = "0px";    
-}
-
-
 n = 1;
 
+let noise;
+noiseon = false;
 
 function setup() {
-  createCanvas(squaresize, squaresize);    
+  createCanvas(innerWidth, innerHeight);    
   strokeWeight(2);  
   textSize(70);
+  noise = new p5.Noise();   
+  noise.start();
+  
+    
 }
 
 
@@ -66,9 +42,9 @@ timeindex = 0;
 nwave = [];
 function draw(){
   background(0);
-  
+  strokeWeight(10);  
   number_of_channels = mouseX*1000;
-  exponent = map(mouseY,height,0,-6,-3);
+  exponent = map(mouseY,height,0,-6,-2);
   transmission = 10**exponent;
 //  0.01;
   n = 0;
@@ -83,12 +59,13 @@ function draw(){
   //text("n = " + n.toString(),30,60);
  // text(number_of_channels.toString() +  " channels",30,130);
 //  text("t = " + transmission.toString(),30,190);
-  
   n_average = 0;
   for(var index = 0;index < n;index++){
-      circle(random(0,width),random(height/2,height),10);
+      circle(random(0,width),random(0,height),10);
   }
-  circle(timeindex,map(n,0,10000,height/2,0),10);
+  noFill();
+
+  stroke("red");  
   noFill();
   beginShape();
   for(var index = 0;index < nwave.length;index++){
@@ -98,32 +75,55 @@ function draw(){
   }
   endShape();
   n_average = n_average/nwave.length;
-
+  stroke("blue");  
   beginShape();
   for(var index = 0;index < nwave.length;index++){
       vertex(index*5,map(nwave[index] - nwave[nwave.length - 1],0,100,height/2,0));
   }
   endShape();
 
+  sinemag = 100;
+  sineperiod = 100;
+  stroke("orange");  
+  beginShape();
+  for(var index = 0;index < nwave.length;index++){
+      vertex(index*5,height/2 - 0.00001*((nwave[index] - nwave[nwave.length - 1])*sinemag*Math.sin((index*5)*2*Math.PI/sineperiod))**2);
+  }
+  endShape();
+  stroke("yellow");  
+  beginShape();
+  for(var index = 0;index < nwave.length;index++){
+      vertex(index*5,height/2 - 0.00001*((nwave[index] - nwave[nwave.length - 1])*sinemag*Math.cos((index*5)*2*Math.PI/sineperiod))**2);
+  }
+  endShape();
+
+  stroke("purple");  
+  fill("purple");
+  circle(timeindex,map(n,0,10000,height/2,0),50);
+  noise.amp(n/1000);
+
   timeindex +=5;
   if(timeindex > width){
       timeindex = 0;
-      make_n_histogram();
       nwave = [];
 
   }
 }
 
-function make_n_histogram(){
-   n_average = 0;
-   for(var index=0;index < nwave.length;index++){
-       n_average += nwave[index];
-   }
-   n_average = n_average/nwave.length;
-   //how big to make the bins?
+
+document.body.onclick = function(){
+    if(noiseon == false){
+        noise.start();
+        noiseon = true;
+    }
+    else{
+        noise.stop();
+        noiseon = false;
+        
+    }
 }
 
-codesquaresize = 170;
+codesquaresize = 160;
 globalurl = window.location.href;
 qrcode = new QRCode(document.getElementById("qrcode"), {
 	text: globalurl,
@@ -138,83 +138,34 @@ qrcode = new QRCode(document.getElementById("qrcode"), {
 <style>
 body{
     overflow:hidden;
-/*    background-color:#F8F0E3;*/
     background-color:#eeeeee;
     font-family:Arial;
+}
+#whitesquare{
+    position:absolute;
+    right:0px;
+    top:0px;
+    width:200px;
+    height:200px;
+    z-index:10;
+    background-color:white;
+}
+#qrcode{
+    position:absolute;
+    left:20px;
+    top:20px;
 }
 main{
     position:absolute;
     left:0px;
     top:0px;
-    z-index:2;
+    z-index:0;
 }
-#equation1{
+main canvas{
     position:absolute;
-    left:0px;
-    top:0px;
-    Z-INDEX:1000000;
-}
-#scroll{
-    position:absolute;
-    right:0px;
-    bottom:0px;
-    overflow:scroll;
-}
-#scroll img{
-    max-width:80%;
-    display:block;
-    margin:auto;
+    z-index:0;
 }
 
-
-
-
-p{
-    margin:1em 1em 1em 1em;
-    font-size:1.5em;
-    font-family:Arial;
-    overflow:scroll;
-}
-h1,h2,h3{
-    font-family:Arial;
-    text-align:center;
-    overflow:scroll;
-
-}
-a{
-    color:blue;
-    font-family:Arial;
-    font-size:1.5em;    
-    overflow:scroll;
-}
-
-
-.deletespan{
-    color:red;
-    border:solid;
-    border-color:red;
-    border-radius:0.5em;
-    padding: 1em 1em 1em 1em;
-    cursor:pointer;
-}
-.deletespan:hover{
-    background-color:#ff000080;
-}
-.filelabel{
-    display:none;
-}
-.button{
-    cursor:pointer;
-}
-.button:hover{
-    background-color:green;
-}
-.button:active{
-    background-color:yellow;
-}
-.data{
-    display:none;
-}
 </style>
 </body>
 </html>
