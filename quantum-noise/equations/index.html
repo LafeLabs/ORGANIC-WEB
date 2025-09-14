@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--
+
+       
+    -->
+        <title>noise modulator</title>
+
+<link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQEQAAAAAAEAAAEAAAAAEAAAABAAAAEAAAAAAQAAEAAAAAAAEAEAAAAAAAABD//wAA//8AAP//AAAAAAAA/v8AAP7/AAD+/wAA/v8AAP7/AAD+/wAA+D8AAPbfAADu7wAA3vcAAL77AAB+/QAA" rel="icon" type="image/x-icon">
+
+
+    <!--Stop Google:-->
+    <META NAME="robots" CONTENT="noindex,nofollow">
+<!--geometron javascript library-->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script>
+            MathJax.Hub.Config({
+                tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                processEscapes: true,
+                processClass: "mathjax",
+                ignoreClass: "no-mathjax"
+                }
+            });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+        </script>
+   <script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<a href = "edit-index.html">edit-index.html</a>
+<span style = "color:red;">
+$$
+V_{audio}(t) = V_{peak}\sin{(2\pi f_{audio} t)}
+$$
+</span>
+<span style = "color:blue;">
+$$
+P = G\left\{k_B T_{N} + \frac{k_B T}{2}\left[\left( \frac{eV_{audio}(t) + hf_{RF}}{2k_B T}\right)\coth{\left( \frac{eV_{audio}(t) + hf_{RF}}{2k_B T}\right)} + \left( \frac{eV_{audio}(t) - hf_{RF}}{2k_B T}\right)\coth{\left( \frac{eV_{audio}(t) - hf_{RF}}{2k_B T}\right)}\right]\right\}
+$$    
+</span>
+<span style = "color:purple">
+    $$
+P = G\left\{k_B T_{N} + \frac{k_B T}{2}\left[\left( \frac{e V_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} + hf_{RF}}{2k_B T}\right)\coth{\left( \frac{eV_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} + hf_{RF}}{2k_B T}\right)} + \left( \frac{eV_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} - hf_{RF}}{2k_B T}\right)\coth{\left( \frac{eV_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} - hf_{RF}}{2k_B T}\right)}\right]\right\}    
+    $$
+</span>
+<span style = "color:purple">
+    $$
+P = G\left\{k_B T_{N} + \frac{k_B T}{2}\left[\textbf{xcothx}{\left( \frac{eV_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} + hf_{RF}}{2k_B T}\right)} + \textbf{xcothx}{\left( \frac{eV_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} - hf_{RF}}{2k_B T}\right)}\right]\right\}    
+    $$
+</span>
+<SPAN style = "color:purple">
+    $$
+P(t,\phi,\eta,\theta,\psi,\theta_N,G) = G\left\{\theta_N + \frac{\theta}{2}\left[\textbf{xcothx}{\left( \frac{\eta\sin{(2\pi f_{audio} t  + \psi_{audio})} + \phi}{2\theta}\right)} + \textbf{xcothx}{\left( \frac{\eta\sin{(2\pi f_{audio} t  + \psi_{audio})} - \phi}{2\theta}\right)}\right]\right\}   
+    $$
+</SPAN>
+<p>
+    $k_B T$ is in units of pixels. P is in units of pixels. G is dimensionless linear gain. $eV_{audio}$ is in units of pixels. hf is in units of pixels.  In reduced form, $\theta = k_B T$, $\phi = hf_{RF}$, and $\eta = eV^{audio}_{peak}$, all measured in units of pixels with the same conversion between pixels and yoctojoules.
+</p>
+<style>
+body{
+    font-size:1em;
+}
+a{
+    color:blue;
+    display:block;
+}
+</style>
+</body>
+</html>
