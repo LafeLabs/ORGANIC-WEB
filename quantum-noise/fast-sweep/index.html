@@ -111,9 +111,15 @@ timeindex = 0;
 xindex = 0;
 vwave = [];
 pwave = [];
-
 xstep= 2;
+fit = {
+    "phase":0,
+    "offset":0,
+    "peak":1
+}
+
 function draw(){
+    textSize(100);
 
   background(200);    
   photonenergy = Math.abs((squaresize - mouseY)/4);//photon energy is in units of pixels
@@ -191,6 +197,24 @@ function draw(){
   fill("red");
   text("ev/hf = " + (Math.round(10*(vmax/photonenergy))/10).toString() ,25,height- 125);
 
+  textSize(40);
+  loadfit();
+  fill(0);
+  stroke(0);
+  text("offset = " + fit.offset.toString(),100,100);
+  text("peak = " + fit.peak.toString(),100,150);
+  text("phase = " + fit.phase.toString(),100,200);
+
+  stroke("pink");
+    strokeWeight(10);
+
+  noFill();
+  beginShape();
+  for (var index = 0; index < width; index++)  {
+      vertex(index,fit.offset + fit.peak*Math.sin((Math.PI*fit.phase/180) +  (4*Math.PI*index/150) ) );
+  }
+  endShape();  
+
   stroke("black");
   noFill();
 
@@ -215,6 +239,25 @@ function savewave(){
     httpc.open("POST", "save-file.php", true);
     httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     httpc.send("data="+encodeURIComponent(JSON.stringify(noisewave,null,"    "))+"&filename=noisewave.json");//send text to save-file.php
+}
+
+
+function loadfit(){
+    var httpc = new XMLHttpRequest();
+    httpc.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            fit_check = JSON.parse(this.responseText);
+              if(fit_check.offset != undefined){
+                  fit = fit_check;
+              }
+              else{
+                  console.log("fail to load JSON file");
+              }
+
+        }
+    };
+    httpc.open("GET", "load-file.php?filename=fit_parameters.json", true);
+    httpc.send();
 }
 
 direction = '';
