@@ -1,77 +1,18 @@
-# [Organic Web README.md](https://github.com/LafeLabs/ORGANIC-WEB)
+$$E=mc^2$$
 
-## [branch.html](branch.html)
+$$
+\left\{\frac{1}{2}\right\}
+$$
 
-The organic web is an operating system independent self-replicating and self-editing set of files from the following formats:
+$$P = G\left\( k_B T_{N} + \frac{k_B T}{2}\left[\left( \frac{eV_{audio}(t) + hf_{RF}}{2k_B T}\right)\coth{\left( \frac{eV_{audio}(t) + hf_{RF}}{2k_B T}\right)} + \left( \frac{eV_{audio}(t) - hf_{RF}}{2k_B T}\right)\coth{\left( \frac{eV_{audio}(t) - hf_{RF}}{2k_B T}\right)}\right]\right\)$$
 
- - [HTML](https://en.wikipedia.org/wiki/HTML)
- - [CSS](https://en.wikipedia.org/wiki/CSS)
- - [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
- - [Markdown](https://en.wikipedia.org/wiki/Markdown)
- - [JSON](https://en.wikipedia.org/wiki/JSON)
- - [PHP](https://en.wikipedia.org/wiki/PHP)
- - [LaTeX](https://en.wikipedia.org/wiki/LaTeX)
- - [Text](https://en.wikipedia.org/wiki/Text_file)
 
-This system can be used to publish any media on any hardware and any software. It can be used for scientific publication, writing and distributing a wide range of application software, journalism, music distribution, social media, and arbitrary media distribution of all kinds.
+$$P = G\left\{k_B T_{N} + \frac{k_B T}{2}\left[\left( \frac{e V_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} + hf_{RF}}{2k_B T}\right)\coth{\left( \frac{eV_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} + hf_{RF}}{2k_B T}\right)} + \left( \frac{eV_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} - hf_{RF}}{2k_B T}\right)\coth{\left( \frac{eV_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} - hf_{RF}}{2k_B T}\right)}\right]\right\}$$
 
-To run on a Windows or Mac computer, install [XAMPP](https://www.apachefriends.org/) and put the set into the web folder.  To install on a linux machine, copy the following commands into the terminal one by one:
+$$P = G\left\{k_B T_{N} + \frac{k_B T}{2}\left[\textbf{xcothx}{\left( \frac{eV_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} + hf_{RF}}{2k_B T}\right)} + \textbf{xcothx}{\left( \frac{eV_{peak}\sin{(2\pi f_{audio} t  + \psi_{audio})} - hf_{RF}}{2k_B T}\right)}\right]\right\}$$
 
-```
-sudo apt update
-sudo apt install apache2 -y
-sudo apt install php libapache2-mod-php -y
-cd /var/www/html
-sudo rm index.html
-sudo apt-get install curl
-sudo curl -o replicator.php https://raw.githubusercontent.com/LafeLabs/ORGANIC-WEB/refs/heads/main/php/replicator.txt
-cd ..
-sudo chmod -R 0777 *
-cd html
-php replicator.php
-sudo chmod -R 0777 *
-ln -s /var/www/html ~/Desktop/html
-```
+$$P(t,\phi,\eta,\theta,\psi,\theta_N,G) = G\left\{\theta_N + \frac{\theta}{2}\left[\textbf{xcothx}{\left( \frac{\eta\sin{(2\pi f_{audio} t  + \psi_{audio})} + \phi}{2\theta}\right)} + \textbf{xcothx}{\left( \frac{\eta\sin{(2\pi f_{audio} t  + \psi_{audio})} - \phi}{2\theta}\right)}\right]\right\}$$
 
-# Edit files
+$k_B T$ is in units of pixels. P is in units of pixels. G is dimensionless linear gain. $eV_{audio}$ is in units of pixels. hf is in units of pixels.  In reduced form, $\theta = k_B T$, $\phi = hf_{RF}$, and $\eta = eV^{audio}_{peak}$, all measured in units of pixels with the same conversion between pixels and yoctojoules.
 
- - [edit-index.html](edit-index.html)
- - [edit-web-files.html](edit-web-files.html)
- - [edit-text-files.html](edit-text-files.html)
- - [edit-markdown-files.html](edit-markdown-files.html)
- - [edit-php-files.html](edit-php-files.html)
- - [edit-readme.html](edit-readme.html)
 
-# Read markdown and text files
-
- - [read-markdown-files.html](read-markdown-files.html)
- - [read-markdown-latex-files.html](read-markdown-latex-files.html)
- - [read-text-files.html](read-text-files.html)
-
-# Delete files:
-
- - [delete-web-files.html](delete-web-files.html)
- - [delete-text-files.html](delete-text-files.html)
- - [delete-markdown-files.html](delete-markdown-files.html)
- - [delete-php-files.html](delete-php-files.html)
- - [delete-images.html](delete-images.html)
-
-# PHP FILES AS TEXT
-
- - [php/branch.txt](php/branch.txt)
- - [php/compile-php.txt](php/compile-php.txt)
- - [php/copy.txt](php/copy.txt)
- - [php/delete-branch.txt](php/delete-branch.txt)
- - [php/delete-file.txt](php/delete-file.txt)
- - [php/edit-markdown-file.txt](php/edit-markdown-file.txt)
- - [php/generate-dna.txt](php/generate-dna.txt)
- - [php/list-branches.txt](php/list-branches.txt)
- - [php/list-files.txt](php/list-files.txt)
- - [php/load-file.txt](php/load-file.txt)
- - [php/local-replicator.txt](php/local-replicator.txt)
- - [php/read-markdown-file-latex.txt](php/read-markdown-file-latex.txt)
- - [php/read-markdown-file.txt](php/read-markdown-file.txt)
- - [php/replicator.txt](php/replicator.txt)
- - [php/save-file.txt](php/save-file.txt)
- - [php/save-png.txt](php/save-png.txt)
- - [php/upload-image.txt](php/upload-image.txt)

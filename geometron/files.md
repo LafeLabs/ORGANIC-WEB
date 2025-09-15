@@ -28,6 +28,7 @@
  - [setup.html](setup.html)
  - [shape-stack.html](shape-stack.html)
  - [shape-stacke.html](shape-stacke.html)
+ - [shapestacksymbols.html](shapestacksymbols.html)
  - [style-editor.html](style-editor.html)
  - [symbol-feed.html](symbol-feed.html)
 
