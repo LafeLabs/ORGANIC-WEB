@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <!--
+Mouse control of xy.json file to pass data to other applications on server side system
+
+xy = {}
+xy.x = x from 0 to 1
+xy.y = y from 0 to 1
+
+-->
+
+
+<link href="data:image/x-icon;base6r4,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAP//AP///wANAP8A5Dz6ABueRwAAt/8A6BonABo86AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAREREREREREREREAAAEREREREQCIgREREd3dwAAB3d3d3d3d3d3d3d3d3d3d3d3d3VVVVVVVQAFVVAAVVVQIiBRAiIBEQIAIBECAAERAgAgFgIABmYCIiBmAiIGZgIiIGYCIgZmYCIAaIAAMzMzAAiIiIiIiIiIiIiIiIiIiIiIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" rel="icon" type="image/x-icon">
+   <title>Mouse-xy</title>    
+   <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
+</head>
+<body> 
+<img id = "yoko" src = "yokogawa.png"/>
+<a id = "editlink" href = "edit-index.html">edit-index.html</a>
+<div id = "help">
+move mouse over numbers and then scroll to set digits or sign.
+</div>
+<style>
+body{
+    font-family:Arial;
+}
+#editlink{
+    position:absolute;
+    left:5px;
+    top:5px;
+    z-index:2;
+    color:blue;
+    font-size:2em;
+}
+main{
+    border:solid;
+    position:absolute;
+    left:100px;
+    top:100px;
+    cursor:pointer;
+}
+#yoko{
+    position:absolute;
+    z-index:-1;
+    left:100px;
+    top:100px;
+    display:none;
+}
+#help{
+    position:absolute;
+    left:5px;
+    right:5px;
+    bottom:5px;
+    height:70px;
+    border:solid;
+    font-family:courier;
+    font-size:16px;
+}
+</style>
+<script>
+
+document.getElementById("yoko").style.width = (innerWidth - 200).toString()  + "px";
+
+function setup() {
+
+  createCanvas(innerWidth - 200, innerHeight - 200);    
+  strokeWeight(1);  
+//  background(128,128,128);
+  noFill();
+  stroke(0);
+  fill(0);
+  textSize(50);
+}
+
+xy = {};
+xy.x = 0;// from 0 to 1
+xy.y = 0;// from 0 to 1
+xy.z = 0;// integers with no bound, always restarts to zero on reload then scrolls up and down
+
+lock = false;
+
+digit_index = -1;
+digits = [0,0,0,0,0,0];
+voltage = 0;
+yokogawa_state = {};
+yokogawa_state.voltage = voltage;
+yokogawa_state.digits = digits;
+yokogawa_state.sign = "+";//string, + or -
+
+sign_set_mode= false;
+
+function draw(){
+    if(!lock){
+        clear();
+        if(mouseX > 2*0.1*width && mouseX < 8*0.1*width){
+            digit_index = Math.floor(6*(mouseX - 0.2*width)/(0.6*width));
+        }
+        else{
+            digit_index = -1;
+        }
+        if(mouseX > 0.1*width && mouseX < 0.2*width && mouseY > 0.3*height && mouseY < 0.7*height){
+            sign_set_mode = true;
+        }
+        else{
+            sign_set_mode = false;
+        }
+            
+        if(digit_index >= 0){
+            fill(125);
+//            rect(width*0.2 + digit_index*width*0.1,0,width*0.1,height);            
+        }
+        
+        xy.x = mouseX/width;// from 0 to 1
+        xy.y = (height - mouseY)/height;// from 0 to 1
+        //limit to the range from 0 to 1
+        if(xy.x > 1){
+            xy.x = 1;
+        }
+        if(xy.x < 0){
+            xy.x = 0;
+        }
+        if(xy.y > 1){
+            xy.y = 1;
+        }
+        if(xy.y < 0){
+            xy.y = 0;
+        }
+        xy.x = round(xy.x*1000)/1000;//round to 3 digits
+        xy.y = round(xy.y*1000)/1000;//round to 3 digits
+        savejson();//save json file
+    
+        textSize(50);
+        fill("red");
+        stroke("red");
+        //text("x = " + xy.x.toString(),100,100);
+        textSize(25);
+        for(var index = 1;index < 10;index++){
+           // line(index*width/10,height,index*width/10,0);
+            //text((index/10).toString(),index*width/10 + 10,height - 10);
+           // text((index/10).toString(),index*width/10 + 10, 30);
+        }
+        textSize(50);
+        fill("green");
+        stroke("green");
+        //text("y = " + xy.y.toString(),100,200);
+        textSize(25);
+        for(var index = 1;index < 10;index++){
+          //  line(0,index*height/10,width,index*height/10);
+           // text(((10 - index)/10).toString(),10,index*height/10 - 10);
+           // text(((10 - index)/10).toString(),width - 50,index*height/10 - 10);
+        }
+    
+        stroke("black");
+        fill("black");
+        noFill();
+//        circle(mouseX,mouseY,50);
+  //      line(mouseX,mouseY - 50,mouseX,mouseY + 50);
+    //    line(mouseX - 50,mouseY,mouseX + 50,mouseY);
+        textSize(50);
+        fill("blue");
+        stroke("blue");
+       // text("z = " + xy.z.toString(), 100, 300);
+
+        fill(0);
+//        stroke("#0CCDDF");
+        stroke(0);
+        for(var index = 1;index < 8;index++){
+            rect(index*width/10,0.4*height,width/10,0.3*height);
+        }
+        stroke("#0CCDDF");
+        fill("#0CCDDF");
+        textSize(180);
+        voltage = 0;
+        for(var index=0;index < digits.length;index++){
+            if(index == digit_index && mouseY > 0.3*height && mouseY < 0.7*height){
+                fill(50);
+                rect(width*0.2 + digit_index*width*0.1,0.4*height,width*0.1,0.3*height);            
+                fill("#0CCDDF");
+//              rect(index*width/10,0.4*height,width/10,0.3*height);
+            }
+            text(digits[index].toString(),0.21*width + index*width/10,0.64*height);
+            voltage += digits[index]*10**(-index);
+        }
+
+        if(sign_set_mode){
+            fill(50);
+            rect(width*0.1,0.4*height,width*0.1,0.3*height);            
+            fill("#0CCDDF");
+            
+        }
+
+
+
+        text(".",0.18*width + width/10,0.64*height);
+        text(yokogawa_state.sign,0.02*width + width/10,0.64*height);
+
+        fill("blue");
+        stroke("blue");
+        textSize(50);
+        text("YOKOGAWA GS200",100,100);
+        
+    }
+}
+
+
+var httpc = new XMLHttpRequest();
+httpc.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        yokogawa_state = JSON.parse(this.responseText);
+        voltage = yokogawa_state.voltage;
+        digits = yokogawa_state.digits;
+    }
+};
+httpc.open("GET", "load-file.php?filename=yokogawa_state.json", true);
+httpc.send();
+
+function savejson(){
+    voltage = 0;
+    for(var index=0;index < digits.length;index++){
+        voltage += digits[index]*10**(-index);
+    }
+    yokogawa_state.voltage = voltage;
+    yokogawa_state.digits = digits;
+    var httpc = new XMLHttpRequest();
+    httpc.open("POST", "save-file.php", true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc.send("data="+encodeURIComponent(JSON.stringify(yokogawa_state,null,"    "))+"&filename=yokogawa_state.json");//send text to save-file.php
+}
+
+direction = '';
+function mouseWheel(event) {
+  if (event.delta > 0) {
+    direction = 'mouse wheel down';
+    xy.z--;
+    if(digit_index >= 0 && mouseY > 0.3*height && mouseY < 0.7*height){
+        digits[digit_index]--;
+        if(digits[digit_index] < 0){
+            digits[digit_index] = 9;
+        }
+        savejson();
+    }
+        
+    if(sign_set_mode){
+        if(yokogawa_state.sign == "+"){
+            yokogawa_state.sign = "-";
+        }
+        else{
+            yokogawa_state.sign = "+";
+        }
+        savejson();
+
+    }
+
+    
+  } else {
+    direction = 'mouse wheel up';
+    xy.z++;
+    if(digit_index >= 0 && mouseY > 0.3*height && mouseY < 0.7*height){
+        digits[digit_index]++;
+        if(digits[digit_index] > 9){
+            digits[digit_index] = 0;
+        }
+        savejson();
+    }
+    if(sign_set_mode){
+        if(yokogawa_state.sign == "+"){
+            yokogawa_state.sign = "-";
+        }
+        else{
+            yokogawa_state.sign = "+";
+        }
+        savejson();
+
+    }
+ 
+  }
+  // Uncomment to prevent any default behavior.
+  // return false;
+}
+
+function mouseClicked() {
+  lock = !lock;
+}
+
+
+function keyPressed() {
+  if (key === 'c') {
+    // Code to run.
+  }
+  if (keyCode === DOWN_ARROW && digit_index >= 0 && mouseY > 0.3*height && mouseY < 0.7*height) {
+        digits[digit_index]--;
+        if(digits[digit_index] < 0){
+            digits[digit_index] = 9;
+        }
+        savejson();
+  }
+  if ((keyCode === DOWN_ARROW || keyCode === UP_ARROW) && sign_set_mode) {
+        if(yokogawa_state.sign == "+"){
+            yokogawa_state.sign = "-";
+        }
+        else{
+            yokogawa_state.sign = "+";
+        }
+        savejson();
+  }
+
+  if (keyCode === UP_ARROW && digit_index >= 0 && mouseY > 0.3*height && mouseY < 0.7*height) {
+        digits[digit_index]++;
+        if(digits[digit_index] > 9){
+            digits[digit_index] = 0;
+        }
+        savejson();
+  }
+}
+</script>
+</body>
+</html>
+
+
+    
+    
