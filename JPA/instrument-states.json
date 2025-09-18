@@ -1,0 +1,18 @@
+{
+    "yokogawa_state":{
+        "voltage": 3.60174,
+        "digits": [
+            3,
+            6,
+            0,
+            1,
+            7,
+            4
+        ],
+        "sign": "+"
+    },
+    "vna_state":{
+    },
+    "pump_state":{
+    }    
+}
