@@ -169,9 +169,42 @@ function keyPressed() {
         }
 //        savejson();
   }
-  
-  
 }
+
+direction = '';
+function mouseWheel(event) {
+  if (event.delta > 0) {
+    direction = 'mouse wheel down';
+    if (v_digit_index >= 1) {
+        v_digit_array[v_digit_index]--;
+        if(v_digit_array[v_digit_index] < 0){
+            v_digit_array[v_digit_index] = 9;
+        }
+    //    savejson();
+    }
+
+  } else {
+    direction = 'mouse wheel up';
+    if (v_digit_index >= 1) {
+        v_digit_array[v_digit_index]++;
+        if(v_digit_array[v_digit_index] > 9){
+            v_digit_array[v_digit_index] = 0;
+        }
+//   savejson();
+    }
+    if( p_digit_index >= 1) {
+        p_digit_array[p_digit_index]++;
+        if(p_digit_array[p_digit_index] > 9){
+            p_digit_array[p_digit_index] = 0;
+        }
+//        savejson();
+    }
+    
+  }
+  // Uncomment to prevent any default behavior.
+  // return false;
+}
+
 </script>
 </body>
 </html>
