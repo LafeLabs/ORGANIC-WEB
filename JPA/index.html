@@ -44,10 +44,10 @@ function setup() {
 }
 
 
-vdigit = -1;
-pdigit = -1;
-vdigitarray = [1,0,5,6,0,0,0];
-pdigitarray = [1,3,5,0];
+v_digit_index = -1;
+p_digit_index = -1;
+v_digit_array = [1,0,5,6,0,0,0];
+p_digit_array = [1,3,5,0];
 
 function draw(){
     clear();
@@ -66,18 +66,18 @@ function draw(){
 
     fill(50);
     if(mouseX > 0.2*width && mouseX < 0.9*width && mouseY > 0.6*height && mouseY < 0.8*height){
-        vdigit = Math.floor((mouseX - 0.2*width)/(0.1*width));
-        rect(0.2*width + vdigit*0.1*width,0.6*height,0.1*width,0.2*height);
+        v_digit_index = Math.floor((mouseX - 0.2*width)/(0.1*width));
+        rect(0.2*width + v_digit_index*0.1*width,0.6*height,0.1*width,0.2*height);
     }
     else{
-        vdigit = -1;
+        v_digit_index = -1;
     }
     if(mouseX > 0.2*width && mouseX < 0.6*width && mouseY > 0.8*height && mouseY < height){
-        pdigit = Math.floor((mouseX - 0.2*width)/(0.1*width));
-        rect(0.2*width + pdigit*0.1*width,0.8*height,0.1*width,0.2*height);
+        p_digit_index = Math.floor((mouseX - 0.2*width)/(0.1*width));
+        rect(0.2*width + p_digit_index*0.1*width,0.8*height,0.1*width,0.2*height);
     }
     else{
-        pdigit = -1;
+        p_digit_index = -1;
     }
 
     fill("#0CCDDF");
@@ -88,25 +88,25 @@ function draw(){
     text("P= ",10,0.8*height + 2*width*0.1 -50);
     text(".",0.1*width*3.75, 0.8*height + 2*width*0.1 -50);
 
-    if(vdigitarray[0] == 1){
+    if(v_digit_array[0] == 1){
         text("+",width*0.2 + 5,0.6*height + 2*width*0.1 -50);
     }
     else{
         text("-",width*0.2 + 5,0.6*height + 2*width*0.1 -50);
     }
-    for(var index = 1;index < vdigitarray.length;index++){
-        text(vdigitarray[index].toString(),(2 + index)*width*0.1 + 5,0.8*height - 50);
+    for(var index = 1;index < v_digit_array.length;index++){
+        text(v_digit_array[index].toString(),(2 + index)*width*0.1 + 5,0.8*height - 50);
     }
     text("V",(9)*width*0.1 ,0.8*height - 50);
 
-    if(pdigitarray[0] == 1){
+    if(p_digit_array[0] == 1){
         text("+",width*0.2 + 5,0.8*height + 2*width*0.1 -50);
     }
     else{
         text("-",width*0.2 + 5,0.8*height + 2*width*0.1 -50);
     }
-    for(var index = 1;index < pdigitarray.length;index++){
-        text(pdigitarray[index].toString(),(2 + index)*width*0.1 + 5,height - 50);
+    for(var index = 1;index < p_digit_array.length;index++){
+        text(p_digit_array[index].toString(),(2 + index)*width*0.1 + 5,height - 50);
     }
     text("dBm",(6)*width*0.1 + 15,height - 50);
 
@@ -123,6 +123,55 @@ function draw(){
 }
 
 
+
+
+
+function keyPressed() {
+  if (key === 'c') {
+    // Code to run.
+  }
+  if (keyCode === DOWN_ARROW && v_digit_index >= 1) {
+        v_digit_array[v_digit_index]--;
+        if(v_digit_array[v_digit_index] < 0){
+            v_digit_array[v_digit_index] = 9;
+        }
+    //    savejson();
+  }
+  if (keyCode === UP_ARROW && v_digit_index >= 1) {
+        v_digit_array[v_digit_index]++;
+        if(v_digit_array[v_digit_index] > 9){
+            v_digit_array[v_digit_index] = 0;
+        }
+//        savejson();
+  }
+  if (v_digit_index == 0 &&(keyCode === UP_ARROW || keyCode === DOWN_ARROW)) {
+        v_digit_array[0] = -1*v_digit_array[0];
+//        savejson();
+  }
+  if (p_digit_index == 0 &&(keyCode === UP_ARROW || keyCode === DOWN_ARROW)) {
+        p_digit_array[0] = -1*p_digit_array[0];
+//        savejson();
+  }
+
+
+  if (keyCode === DOWN_ARROW && p_digit_index >= 1) {
+        p_digit_array[p_digit_index]--;
+        if(p_digit_array[p_digit_index] < 0){
+            p_digit_array[p_digit_index] = 9;
+        }
+    //    savejson();
+  }
+
+  if (keyCode === UP_ARROW && p_digit_index >= 1) {
+        p_digit_array[p_digit_index]++;
+        if(p_digit_array[p_digit_index] > 9){
+            p_digit_array[p_digit_index] = 0;
+        }
+//        savejson();
+  }
+  
+  
+}
 </script>
 </body>
 </html>
