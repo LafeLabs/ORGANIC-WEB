@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <!--
+
+-->
+<link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAPv/AAD4/wAA+38AAPufAAD77wAAA/AAAPvvAAD7nwAA+38AAPj/AAD7/wAA//8AAP//AAD//wAA" rel="icon" type="image/x-icon">
+
+
+   <title>get remote s2p files</title>    
+</head>
+<body> 
+<a id = "editlink" href = "edit-index.html">edit-index.html</a>
+<a ID = "editlink2" href = "edit-web-files.html">edit-web-files.html</a>
+<style>
+body{
+    font-family:Arial;
+    background-color:#404040;
+}
+a{
+    color:#ff2cb4;
+}
+#editlink{
+    position:absolute;
+    left:5px;
+    top:5px;
+    z-index:2;
+    font-size:2em;
+}
+#editlink{
+    position:absolute;
+    left:5px;
+    top:50px;
+    z-index:2;
+    font-size:2em;
+}
+
+main{
+    position:absolute;
+    right:0px;
+    top:0px;
+    cursor:pointer;
+}
+</style>
+<script>
+baseurl = "https://raw.githubusercontent.com/lafefspietz/organic-web/refs/heads/main/JPA/data091825-base/scan3/trace0.s2p";
+
+for(var index = 0;index < 100;index++){
+    filename = "trace" + index.toString() + ".s2p";
+    fileurl = baseurl + filename; 
+    var httpc = new XMLHttpRequest();
+    httpc.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            filedata = this.responseText;
+            var httpc2 = new XMLHttpRequest();
+            var url = "save-file.php";        
+            httpc2.open("POST", url, true);
+            httpc2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+            httpc2.send("data="+filedata+"&filename=ampdata/" + filename);//send text to save-file.php
+        }
+    };
+
+    httpc.open("GET", "load-file.php?filename=" + fileurl, true);
+    httpc.send();    
+}
+
+</script>
+</body>
+</html>
+
+
+    
+    
