@@ -38,16 +38,29 @@ main{
 <script>
 
 
-function setup() {
-  createCanvas(innerHeight-5,innerHeight-5);    
-  strokeWeight(1);  
-}
-
-
 v_digit_index = -1;
 p_digit_index = -1;
 v_digit_array = [1,0,5,6,0,0,0];
 p_digit_array = [1,3,5,0];
+var httpc = new XMLHttpRequest();
+httpc.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        control_json = JSON.parse(this.responseText);
+        v_digit_array = control_json.v_digit_array;
+        p_digit_array = control_json.p_digit_array;
+    }
+};
+httpc.open("GET", "load-file.php?filename=control.json", true);
+httpc.send();
+
+function setup() {
+    createCanvas(innerHeight-5,innerHeight-5);    
+    strokeWeight(1);  
+}
+
+
+
+
 
 function draw(){
     clear();
@@ -120,6 +133,11 @@ function draw(){
     }
     endShape();
     
+    textSize(width*0.1);
+    stroke("red");
+    fill('red');
+    text("JPA",10,width*0.1);
+    
 }
 
 
@@ -127,30 +145,31 @@ function draw(){
 
 
 function keyPressed() {
-  if (key === 'c') {
-    // Code to run.
+  if (key.charCodeAt(0) >= 060 && key.charCodeAt(0) < 072) {
+       if(v_digit_index >= 1){
+           v_digit_array[v_digit_index] = parseInt(key.charCodeAt(0)) - 060;
+       }
+       if(p_digit_index >= 1){
+           p_digit_array[p_digit_index] = parseInt(key.charCodeAt(0)) - 060;
+       }
   }
   if (keyCode === DOWN_ARROW && v_digit_index >= 1) {
         v_digit_array[v_digit_index]--;
         if(v_digit_array[v_digit_index] < 0){
             v_digit_array[v_digit_index] = 9;
         }
-    //    savejson();
   }
   if (keyCode === UP_ARROW && v_digit_index >= 1) {
         v_digit_array[v_digit_index]++;
         if(v_digit_array[v_digit_index] > 9){
             v_digit_array[v_digit_index] = 0;
         }
-//        savejson();
   }
   if (v_digit_index == 0 &&(keyCode === UP_ARROW || keyCode === DOWN_ARROW)) {
         v_digit_array[0] = -1*v_digit_array[0];
-//        savejson();
   }
   if (p_digit_index == 0 &&(keyCode === UP_ARROW || keyCode === DOWN_ARROW)) {
         p_digit_array[0] = -1*p_digit_array[0];
-//        savejson();
   }
 
 
@@ -159,7 +178,6 @@ function keyPressed() {
         if(p_digit_array[p_digit_index] < 0){
             p_digit_array[p_digit_index] = 9;
         }
-    //    savejson();
   }
 
   if (keyCode === UP_ARROW && p_digit_index >= 1) {
@@ -167,8 +185,8 @@ function keyPressed() {
         if(p_digit_array[p_digit_index] > 9){
             p_digit_array[p_digit_index] = 0;
         }
-//        savejson();
   }
+  savejson();
 }
 
 direction = '';
@@ -180,9 +198,13 @@ function mouseWheel(event) {
         if(v_digit_array[v_digit_index] < 0){
             v_digit_array[v_digit_index] = 9;
         }
-    //    savejson();
     }
-
+    if (p_digit_index >= 1) {
+        p_digit_array[p_digit_index]--;
+        if(p_digit_array[p_digit_index] < 0){
+            p_digit_array[p_digit_index] = 9;
+        }
+    }
   } else {
     direction = 'mouse wheel up';
     if (v_digit_index >= 1) {
@@ -190,21 +212,52 @@ function mouseWheel(event) {
         if(v_digit_array[v_digit_index] > 9){
             v_digit_array[v_digit_index] = 0;
         }
-//   savejson();
     }
     if( p_digit_index >= 1) {
         p_digit_array[p_digit_index]++;
         if(p_digit_array[p_digit_index] > 9){
             p_digit_array[p_digit_index] = 0;
         }
-//        savejson();
     }
     
   }
+  if (v_digit_index == 0 ) {
+        v_digit_array[0] = -1*v_digit_array[0];
+  }
+  if (p_digit_index == 0 ) {
+        p_digit_array[0] = -1*p_digit_array[0];
+  }  
+  
+  savejson();
+
   // Uncomment to prevent any default behavior.
   // return false;
 }
 
+
+
+function savejson(){
+    v = 0;
+    for(var index=1;index < v_digit_array.length;index++){
+        v += v_digit_array[index]*10**(1-index);
+    }
+    v *= v_digit_array[0];//sign
+    p = 0;
+    for(var index=1;index < p_digit_array.length;index++){
+        p += p_digit_array[index]*10**(1-index);
+    }
+    p *= p_digit_array[0];//sign
+    
+    control_json.p = p;
+    control_json.v = v;
+    control_json.v_digit_array = v_digit_array;
+    control_json.p_digit_array = p_digit_array;
+
+    var httpc = new XMLHttpRequest();
+    httpc.open("POST", "save-file.php", true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc.send("data="+encodeURIComponent(JSON.stringify(control_json,null,"    "))+"&filename=control.json");//send text to save-file.php
+}
 </script>
 </body>
 </html>
