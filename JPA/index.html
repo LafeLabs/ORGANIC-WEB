@@ -62,14 +62,6 @@ httpc.onreadystatechange = function() {
 httpc.open("GET", "load-file.php?filename=control.json", true);
 httpc.send();
 
-function setup() {
-    createCanvas(innerHeight-5,innerHeight-5);    
-    strokeWeight(1);  
-}
-
-
-
-
 traceindex= 0;
 tracejson = {};
 var httpc = new XMLHttpRequest();
@@ -80,6 +72,16 @@ httpc.onreadystatechange = function() {
 };
 httpc.open("GET", "load-file.php?filename=ampdatajson/trace" + traceindex.toString() + ".json", true);
 httpc.send();
+
+
+function setup() {
+    createCanvas(innerHeight-5,innerHeight-5);    
+    strokeWeight(1);  
+}
+
+
+
+
 
 function draw(){
     clear();
@@ -185,7 +187,20 @@ function draw(){
         vertex(map(index,0,tracejson.fghz.length,0,width),map(tracejson.gaindbfit[index],0,30,0.6*height,0));
     }
     endShape();
+
+    stroke("blue");
     
+    peak = map(tracejson.curvepeak,0,30,0,0.6*height);
+    fwhm = map(tracejson.fwhm,tracejson.fghz[0],tracejson.fghz[tracejson.fghz.length-1],0,width);
+    f0 =     map(tracejson.f0,tracejson.fghz[0],tracejson.fghz[tracejson.fghz.length-1],0,width);
+
+    line(0,0.6*height - peak,width,0.6*height - peak);
+    line(f0,0,f0,height);
+    fill("#ff00ff20");
+  //  rect(f0 ,0.6*height,100,100);
+//    console.log(tracejson.fwhm);
+    //rect(f0-0.5*fwhm,0.6*height,peak,fwhm);
+  
     traceindex++;
     if(traceindex >= 100){
         traceindex = 0;
