@@ -177,6 +177,14 @@ function draw(){
     }
     endShape();
 
+    stroke("red");
+    noFill();
+    strokeWeight(5);  
+    beginShape();
+    for(var index = 0;index < tracejson.fghz.length;index++){
+        vertex(map(index,0,tracejson.fghz.length,0,width),map(tracejson.gaindbfit[index],0,30,0.6*height,0));
+    }
+    endShape();
     
     traceindex++;
     if(traceindex >= 100){
