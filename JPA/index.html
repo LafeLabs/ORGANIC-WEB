@@ -191,14 +191,14 @@ function draw(){
     stroke("blue");
     
     peak = map(tracejson.curvepeak,0,30,0,0.6*height);
-    fwhm = map(tracejson.fwhm,tracejson.fghz[0],tracejson.fghz[tracejson.fghz.length-1],0,width);
+    fwhm = map(Math.abs(tracejson.fwhm),tracejson.fghz[0],tracejson.fghz[tracejson.fghz.length-1],0,width);
     f0 =     map(tracejson.f0,tracejson.fghz[0],tracejson.fghz[tracejson.fghz.length-1],0,width);
 
     line(0,0.6*height - peak,width,0.6*height - peak);
     line(f0,0,f0,height);
     fill("#ff00ff20");
   //  rect(f0 ,0.6*height,100,100);
-//    console.log(tracejson.fwhm);
+    console.log(tracejson.fwhm);
     //rect(f0-0.5*fwhm,0.6*height,peak,fwhm);
   
     traceindex++;
